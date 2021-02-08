@@ -7,3 +7,4 @@
 config
 *.iml
 .DS_Store
+README.md
