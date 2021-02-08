@@ -17,7 +17,6 @@ public class TestPasswordReader {
     @Test
     public void testFileContainsContent() throws IOException {
         assertTrue(passwordReader.read("config"));
+
     }
-
-
 }

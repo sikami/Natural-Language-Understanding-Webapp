@@ -16,6 +16,13 @@ public class PasswordReader {
         return false;
     }
 
+    public String getApiKey() {
+        return apiKey;
+    }
+
+    public String getUrl() {
+        return url;
+    }
 
     public boolean read(String config) throws IOException {
 
