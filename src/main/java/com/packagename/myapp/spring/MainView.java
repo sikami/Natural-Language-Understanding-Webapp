@@ -19,6 +19,10 @@ import java.util.concurrent.atomic.AtomicReference;
 @StyleSheet("frontend://styles/styles.css")
 public class MainView extends VerticalLayout {
 
+    private TextArea textArea;
+    private RadioButtonGroup<String> analyze;
+    private TextField keywordField;
+
     public MainView(@Autowired MessageBean bean) {
         setDefaultHorizontalComponentAlignment(Alignment.CENTER);
         setSizeFull();
@@ -41,10 +45,10 @@ public class MainView extends VerticalLayout {
         Label textFieldLabel = new Label("Please insert your text below:");
         add(textFieldLabel);
 
-        TextArea textArea = new TextArea();
+        textArea = new TextArea();
         textArea.setSizeFull();
         add(textArea);
-        RadioButtonGroup<String> analyze = new RadioButtonGroup<>();
+        analyze = new RadioButtonGroup<>();
         analyze.setItems("Emotion", "Syntax");
 
         Label analyzeOption = new Label("Analyze for:");
@@ -53,7 +57,7 @@ public class MainView extends VerticalLayout {
         Label keywordLabel = new Label("Enter your keyword(s) below. If you have more" +
                 " than one keyword, please separate them with comma.");
 
-        TextField keywordField = new TextField();
+        keywordField = new TextField();
         keywordField.setWidth("300px");
         Button button = new Button("Analyze and show result");
         button.getElement().getThemeList().add("primary");
@@ -82,12 +86,16 @@ public class MainView extends VerticalLayout {
         if (option.equals("Emotion")) {
             button.addClickListener(event -> {
                 //label.set(new Label("Emotion is selected"));
-
+                keywordField.setEnabled(false);
+                analyze.setEnabled(false);
+                textArea.setEnabled(false);
                 System.out.println("emotion is selected");
             });
         } else if (option.equals("Syntax")) {
             button.addClickListener(event -> {
                 //label.set(new Label("Emotion is selected"));
+                analyze.setEnabled(false);
+                textArea.setEnabled(false);
                 System.out.println("Syntax is selected");
             });
         }
