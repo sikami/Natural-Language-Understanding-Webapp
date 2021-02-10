@@ -1,30 +1,19 @@
 package com.packagename.myapp.spring;
 
-import com.vaadin.flow.component.Tag;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dependency.StyleSheet;
 import com.vaadin.flow.component.html.H1;
-import com.vaadin.flow.component.html.H3;
 import com.vaadin.flow.component.html.H4;
 import com.vaadin.flow.component.html.Label;
-import com.vaadin.flow.component.page.Page;
-import com.vaadin.flow.component.radiobutton.GeneratedVaadinRadioButton;
 import com.vaadin.flow.component.radiobutton.RadioButtonGroup;
 import com.vaadin.flow.component.textfield.TextArea;
 import com.vaadin.flow.component.textfield.TextField;
-import com.vaadin.flow.router.PageTitle;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.Route;
-import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.tags.form.RadioButtonTag;
 
-import javax.swing.*;
-import javax.swing.plaf.basic.BasicBorders;
-import java.awt.*;
-
-import static com.vaadin.flow.component.Tag.P;
+import java.util.concurrent.atomic.AtomicReference;
 
 @Route("")
 @StyleSheet("frontend://styles/styles.css")
@@ -68,21 +57,40 @@ public class MainView extends VerticalLayout {
         keywordField.setWidth("300px");
         Button button = new Button("Analyze and show result");
         button.getElement().getThemeList().add("primary");
+
         analyze.addValueChangeListener(event -> {
            if (event.getValue().equals("Emotion")) {
                remove(button);
                add(keywordLabel);
                add(keywordField);
                add(button);
+               buttonListener(button, "Emotion");
            } else {
                remove(button);
                remove(keywordLabel);
                remove(keywordField);
                add(button);
+               buttonListener(button, "Syntax");
            }
         });
 
 
+    }
+
+    private void buttonListener(Button button, String option) {
+        //AtomicReference<Label> label = new AtomicReference<>(new Label());
+        if (option.equals("Emotion")) {
+            button.addClickListener(event -> {
+                //label.set(new Label("Emotion is selected"));
+
+                System.out.println("emotion is selected");
+            });
+        } else if (option.equals("Syntax")) {
+            button.addClickListener(event -> {
+                //label.set(new Label("Emotion is selected"));
+                System.out.println("Syntax is selected");
+            });
+        }
     }
 
 
