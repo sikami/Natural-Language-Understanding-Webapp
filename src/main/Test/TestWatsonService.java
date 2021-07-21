@@ -4,8 +4,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class TestWatsonService {
 
@@ -36,5 +35,15 @@ public class TestWatsonService {
 
         assertTrue(result.size() == 3);
 
+    }
+
+    @Test
+    public void testIfKeywordsAreAllLowerCase() {
+        Query query = new Query("I love banana", "Love,Banana, Apple");
+        WatsonController watsonController = new WatsonController(query);
+
+        this.watsonService = new WatsonService(watsonController);
+        List<String> result = watsonService.parseKeyword();
+        assertEquals("apple", result.get(2));
     }
 }

@@ -1,9 +1,8 @@
 package com.packagename.myapp.spring;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Stream;
+import java.util.Locale;
 
 public class WatsonService {
     private List<String> keywords;
@@ -25,13 +24,15 @@ public class WatsonService {
         return false;
     }
 
+    //Query has to be delcared in WatsonController
     public List<String> parseKeyword() {
         this.keywords = new ArrayList<>();
-        String keywords = watsonController.getKeyword().trim();
-        String[] keyword = keywords.split(",");
+        String keys = watsonController.getKeyword();
+        String[] keyword = keys.split(",");
 
         for (String word: keyword) {
-            this.keywords.add(word);
+
+            this.keywords.add(word.trim().toLowerCase());
         }
 
         return this.keywords;
