@@ -28,5 +28,17 @@ public class TestWatsonController {
         assertTrue(watsonController.getText().length() > 0);
     }
 
+    @Test
+    public void testIfQueryDontHaveText() {
+        query.setText("");
+        assertTrue(watsonController.getText().length() == 0);
+    }
+
+    @Test
+    public void testIfQueryDontHaveKeywords() {
+        query.setKeywords("");
+        assertTrue(watsonController.getKeyword().length() == 0);
+    }
+
 
 }
