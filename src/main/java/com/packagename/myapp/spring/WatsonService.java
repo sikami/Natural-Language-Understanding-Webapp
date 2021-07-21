@@ -1,16 +1,24 @@
 package com.packagename.myapp.spring;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Stream;
 
 public class WatsonService {
     private List<String> keywords;
+    private WatsonController watsonController;
 
     public WatsonService() {
-        this.keywords = new ArrayList<>();
+        this.watsonController = new WatsonController();
     }
 
-    public static boolean connectToWatson(String option) {
+    public WatsonService(WatsonController watsonController) {
+        this.watsonController = watsonController;
+    }
+
+
+    public static boolean optionChooser(String option) {
         if (option.equals("Emotion") || option.equals("Syntax")) {
             return true;
         }
@@ -18,7 +26,14 @@ public class WatsonService {
     }
 
     public List<String> parseKeyword() {
-        WatsonController watsonController = new WatsonController();
+        this.keywords = new ArrayList<>();
+        String keywords = watsonController.getKeyword().trim();
+        String[] keyword = keywords.split(",");
+
+        for (String word: keyword) {
+            this.keywords.add(word);
+        }
+
         return this.keywords;
     }
 
