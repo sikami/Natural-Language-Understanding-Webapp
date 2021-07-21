@@ -2,11 +2,8 @@ package com.packagename.myapp.spring;
 
 public class WatsonService {
 
-    private Query query = new Query();
-
     public static boolean connectToWatson(String option) {
-        if (option.equals("Emotion")) {
-
+        if (option.equals("Emotion") || option.equals("Syntax")) {
             return true;
         }
         return false;
