@@ -6,4 +6,12 @@ public class WatsonController {
     public WatsonController(Query query) {
         this.query = query;
     }
+
+    public String getKeyword() {
+        return query.getKeyword();
+    }
+
+    public String getText() {
+        return query.getText();
+    }
 }
