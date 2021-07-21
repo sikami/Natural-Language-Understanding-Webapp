@@ -46,4 +46,15 @@ public class TestWatsonService {
         List<String> result = watsonService.parseKeyword();
         assertEquals("apple", result.get(2));
     }
+
+    @Test
+    public void testIfParseKeywordsDontThrowNull() {
+        Query query = new Query("I love banana", "");
+        WatsonController watsonController = new WatsonController(query);
+
+        this.watsonService = new WatsonService(watsonController);
+        List<String> result = watsonService.parseKeyword();
+        assertNotNull(result);
+    }
+
 }

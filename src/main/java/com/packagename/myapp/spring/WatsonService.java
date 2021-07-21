@@ -24,14 +24,17 @@ public class WatsonService {
         return false;
     }
 
-    //Query has to be delcared in WatsonController
+    /**
+     * This method populates keywords. Important for Query to be declared in WatsonController.
+     * Method has to be executed everytime we want to send for keyword to IBM
+     * @return
+     */
     public List<String> parseKeyword() {
         this.keywords = new ArrayList<>();
         String keys = watsonController.getKeyword();
         String[] keyword = keys.split(",");
 
         for (String word: keyword) {
-
             this.keywords.add(word.trim().toLowerCase());
         }
 
