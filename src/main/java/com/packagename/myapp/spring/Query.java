@@ -23,4 +23,12 @@ public class Query {
     public void setKeywords(String keywords) {
         this.keywords = keywords;
     }
+
+    public String getKeyword() {
+        return this.keywords;
+    }
+
+    public String getText() {
+        return this.text;
+    }
 }
