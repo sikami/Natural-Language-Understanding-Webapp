@@ -21,4 +21,11 @@ public class TestWatsonService {
     public void testIfCannotConnectToWatsonOtherThanSyntaxAndEmotion() {
         assertFalse(WatsonService.connectToWatson("Happiness"));
     }
+
+    @Test
+    public void testIfWatsonControllerHasMoreThan1Keywords() {
+        Query query = new Query("I love banana", "love,banana");
+        WatsonController watsonController = new WatsonController(query);
+
+    }
 }
