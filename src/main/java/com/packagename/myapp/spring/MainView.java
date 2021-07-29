@@ -12,16 +12,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.Route;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
+import javax.validation.constraints.NotNull;
 import java.util.concurrent.atomic.AtomicReference;
 
 @Route("")
+@Scope("prototype")
 @StyleSheet("frontend://styles/styles.css")
+@Component
 public class MainView extends VerticalLayout {
 
-    private TextArea textArea;
-    private RadioButtonGroup<String> analyze;
-    private TextField keywordField;
+    TextArea textArea;
+    RadioButtonGroup<String> analyze;
+    TextField keywordField;
 
     public MainView(@Autowired MessageBean bean) {
         setDefaultHorizontalComponentAlignment(Alignment.CENTER);
@@ -35,6 +40,7 @@ public class MainView extends VerticalLayout {
         poweredBy.getElement().getThemeList().add("dark");
         add(poweredBy);
         addTextField();
+        addOption();
 
     }
 
@@ -48,6 +54,10 @@ public class MainView extends VerticalLayout {
         textArea = new TextArea();
         textArea.setSizeFull();
         add(textArea);
+
+    }
+
+    private void addOption() {
         analyze = new RadioButtonGroup<>();
         analyze.setItems("Emotion", "Syntax");
 
@@ -63,22 +73,20 @@ public class MainView extends VerticalLayout {
         button.getElement().getThemeList().add("primary");
 
         analyze.addValueChangeListener(event -> {
-           if (event.getValue().equals("Emotion")) {
-               remove(button);
-               add(keywordLabel);
-               add(keywordField);
-               add(button);
-               buttonListener(button, "Emotion");
-           } else {
-               remove(button);
-               remove(keywordLabel);
-               remove(keywordField);
-               add(button);
-               buttonListener(button, "Syntax");
-           }
+            if (event.getValue().equals("Emotion")) {
+                remove(button);
+                add(keywordLabel);
+                add(keywordField);
+                add(button);
+                buttonListener(button, "Emotion");
+            } else {
+                remove(button);
+                remove(keywordLabel);
+                remove(keywordField);
+                add(button);
+                buttonListener(button, "Syntax");
+            }
         });
-
-
     }
 
     private void buttonListener(Button button, String option) {

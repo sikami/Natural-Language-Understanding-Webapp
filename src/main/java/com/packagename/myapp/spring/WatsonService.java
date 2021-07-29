@@ -8,9 +8,6 @@ public class WatsonService {
     private List<String> keywords;
     private WatsonController watsonController;
 
-    public WatsonService() {
-        this.watsonController = new WatsonController();
-    }
 
     public WatsonService(WatsonController watsonController) {
         this.watsonController = watsonController;
