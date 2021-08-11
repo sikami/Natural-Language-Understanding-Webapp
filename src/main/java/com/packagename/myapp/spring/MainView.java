@@ -25,6 +25,7 @@ import java.util.concurrent.atomic.AtomicReference;
 public class MainView extends VerticalLayout {
 
     TextArea textArea;
+    TextArea resultArea;
     RadioButtonGroup<String> analyze;
     TextField keywordField;
 
@@ -87,6 +88,12 @@ public class MainView extends VerticalLayout {
                 buttonListener(button, "Syntax");
             }
         });
+
+        button.addClickListener(event -> {
+           addResult();
+        });
+
+
     }
 
     private void buttonListener(Button button, String option) {
@@ -109,6 +116,13 @@ public class MainView extends VerticalLayout {
                 button.setEnabled(false);
             });
         }
+    }
+
+    private void addResult() {
+        resultArea = new TextArea();
+        resultArea.setReadOnly(true);
+        resultArea.setSizeFull();
+        add(resultArea);
     }
 
 
