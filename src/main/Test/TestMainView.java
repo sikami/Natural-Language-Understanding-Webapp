@@ -1,7 +1,10 @@
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
+
 
 public class TestMainView {
     private WebDriver webDriver;
@@ -9,8 +12,10 @@ public class TestMainView {
 //    @BeforeAll
     @Test
     public void setup() {
-        System.setProperty("webdriver.gecko.driver", "/Users/listya/Documents/Lis/Lib/geckodriver 2");
-        webDriver = new FirefoxDriver();
+        ChromeOptions chromeOptions = new ChromeOptions();
+        chromeOptions.addArguments("--headless");
+        System.setProperty("webdriver.chrome.driver", "/opt/homebrew/bin/chromedriver");
+        webDriver = new ChromeDriver();
         String baseUrl = "http://demo.guru99.com/test/newtours/";
         String expectedTitle = "Welcome: Mercury Tours";
         String actualTitle = "";
