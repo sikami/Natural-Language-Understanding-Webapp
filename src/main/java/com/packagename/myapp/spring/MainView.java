@@ -98,6 +98,7 @@ public class MainView extends VerticalLayout {
                 analyze.setEnabled(false);
                 textArea.setEnabled(false);
                 System.out.println("emotion is selected");
+                button.setEnabled(false);
             });
         } else if (option.equals("Syntax")) {
             button.addClickListener(event -> {
@@ -105,6 +106,7 @@ public class MainView extends VerticalLayout {
                 analyze.setEnabled(false);
                 textArea.setEnabled(false);
                 System.out.println("Syntax is selected");
+                button.setEnabled(false);
             });
         }
     }

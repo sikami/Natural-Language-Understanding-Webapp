@@ -1,9 +1,10 @@
+import com.packagename.myapp.spring.Application;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.junit.runner.RunWith;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
-import org.openqa.selenium.firefox.FirefoxDriver;
 
 
 public class TestMainView {
@@ -16,8 +17,7 @@ public class TestMainView {
         chromeOptions.addArguments("--headless");
         System.setProperty("webdriver.chrome.driver", "/opt/homebrew/bin/chromedriver");
         webDriver = new ChromeDriver();
-        String baseUrl = "http://demo.guru99.com/test/newtours/";
-        String expectedTitle = "Welcome: Mercury Tours";
+        String baseUrl = "http://localhost:8080";
         String actualTitle = "";
 
         webDriver.get(baseUrl);
