@@ -33,19 +33,18 @@ public class MainView extends VerticalLayout {
         setDefaultHorizontalComponentAlignment(Alignment.CENTER);
         setSizeFull();
         addClassName("main-layout");
-
-        H1 header = new H1("Natural Language Understanding");
-        header.getElement().getThemeList().add("dark");
-        add(header);
-        H4 poweredBy = new H4("Powered by IBM Watson");
-        poweredBy.getElement().getThemeList().add("dark");
-        add(poweredBy);
         addTextField();
         addOption();
 
     }
 
     private void addTextField() {
+        H1 header = new H1("Natural Language Understanding");
+        header.getElement().getThemeList().add("dark");
+        add(header);
+        H4 poweredBy = new H4("Powered by IBM Watson");
+        poweredBy.getElement().getThemeList().add("dark");
+        add(poweredBy);
         setDefaultHorizontalComponentAlignment(Alignment.CENTER);
 
         addClassName("textField");
