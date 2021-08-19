@@ -8,15 +8,16 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class TestPasswordReader {
 
     private PasswordReader passwordReader = new PasswordReader();
+    private String path = "src/main/resources/config";
 
     @Test
     public void testFileExist() {
-        assertTrue(passwordReader.isExist("config"));
+        assertTrue(passwordReader.isExist(path));
     }
 
     @Test
     public void testFileContainsContent() throws IOException {
-        assertTrue(passwordReader.read("config"));
+        assertTrue(passwordReader.read(path));
 
     }
 }

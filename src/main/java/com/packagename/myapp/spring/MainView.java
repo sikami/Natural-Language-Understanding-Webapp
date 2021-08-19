@@ -12,33 +12,39 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.Route;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
+import javax.validation.constraints.NotNull;
 import java.util.concurrent.atomic.AtomicReference;
 
 @Route("")
+@Scope("prototype")
 @StyleSheet("frontend://styles/styles.css")
+@Component
 public class MainView extends VerticalLayout {
 
-    private TextArea textArea;
-    private RadioButtonGroup<String> analyze;
-    private TextField keywordField;
+    TextArea textArea;
+    TextArea resultArea;
+    RadioButtonGroup<String> analyze;
+    TextField keywordField;
 
     public MainView(@Autowired MessageBean bean) {
         setDefaultHorizontalComponentAlignment(Alignment.CENTER);
         setSizeFull();
         addClassName("main-layout");
+        addTextField();
+        addOption();
 
+    }
+
+    private void addTextField() {
         H1 header = new H1("Natural Language Understanding");
         header.getElement().getThemeList().add("dark");
         add(header);
         H4 poweredBy = new H4("Powered by IBM Watson");
         poweredBy.getElement().getThemeList().add("dark");
         add(poweredBy);
-        addTextField();
-
-    }
-
-    private void addTextField() {
         setDefaultHorizontalComponentAlignment(Alignment.CENTER);
 
         addClassName("textField");
@@ -48,6 +54,10 @@ public class MainView extends VerticalLayout {
         textArea = new TextArea();
         textArea.setSizeFull();
         add(textArea);
+
+    }
+
+    private void addOption() {
         analyze = new RadioButtonGroup<>();
         analyze.setItems("Emotion", "Syntax");
 
@@ -63,19 +73,23 @@ public class MainView extends VerticalLayout {
         button.getElement().getThemeList().add("primary");
 
         analyze.addValueChangeListener(event -> {
-           if (event.getValue().equals("Emotion")) {
-               remove(button);
-               add(keywordLabel);
-               add(keywordField);
-               add(button);
-               buttonListener(button, "Emotion");
-           } else {
-               remove(button);
-               remove(keywordLabel);
-               remove(keywordField);
-               add(button);
-               buttonListener(button, "Syntax");
-           }
+            if (event.getValue().equals("Emotion")) {
+                remove(button);
+                add(keywordLabel);
+                add(keywordField);
+                add(button);
+                buttonListener(button, "Emotion");
+            } else {
+                remove(button);
+                remove(keywordLabel);
+                remove(keywordField);
+                add(button);
+                buttonListener(button, "Syntax");
+            }
+        });
+
+        button.addClickListener(event -> {
+           addResult();
         });
 
 
@@ -90,6 +104,7 @@ public class MainView extends VerticalLayout {
                 analyze.setEnabled(false);
                 textArea.setEnabled(false);
                 System.out.println("emotion is selected");
+                button.setEnabled(false);
             });
         } else if (option.equals("Syntax")) {
             button.addClickListener(event -> {
@@ -97,12 +112,27 @@ public class MainView extends VerticalLayout {
                 analyze.setEnabled(false);
                 textArea.setEnabled(false);
                 System.out.println("Syntax is selected");
+                button.setEnabled(false);
             });
         }
     }
 
+    private void addResult() {
+        resultArea = new TextArea();
+        resultArea.setReadOnly(true);
+        resultArea.setSizeFull();
+        add(resultArea);
+    }
 
+    public TextArea getTextArea() {
+        return textArea;
+    }
 
+    public TextArea getResultArea() {
+        return resultArea;
+    }
 
-
+    public TextField getKeywordField() {
+        return keywordField;
+    }
 }
