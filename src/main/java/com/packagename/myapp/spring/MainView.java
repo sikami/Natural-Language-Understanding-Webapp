@@ -124,8 +124,15 @@ public class MainView extends VerticalLayout {
         add(resultArea);
     }
 
+    public TextArea getTextArea() {
+        return textArea;
+    }
 
+    public TextArea getResultArea() {
+        return resultArea;
+    }
 
-
-
+    public TextField getKeywordField() {
+        return keywordField;
+    }
 }
