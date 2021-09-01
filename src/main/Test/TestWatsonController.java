@@ -27,11 +27,6 @@ public class TestWatsonController {
     }
 
     @Test
-    public void testIfCannotConnectToWatsonOtherThanSyntaxAndEmotion() {
-        assertFalse(WatsonService.optionChooser("Happiness"));
-    }
-
-    @Test
     public void testIfCanConnectToWatsonForEmotion() {
         query.setOption("Emotion");
         assertEquals("Emotion", watsonController.getQuery().getOption());
