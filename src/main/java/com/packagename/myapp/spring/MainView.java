@@ -111,6 +111,7 @@ public class MainView extends VerticalLayout {
                 textArea.setEnabled(false);
                 System.out.println("emotion is selected");
                 button.setEnabled(false);
+                query.setOption("Emotion");
             });
         } else if (option.equals("Syntax")) {
             button.addClickListener(event -> {
@@ -119,6 +120,7 @@ public class MainView extends VerticalLayout {
                 textArea.setEnabled(false);
                 System.out.println("Syntax is selected");
                 button.setEnabled(false);
+                query.setOption("Syntax");
             });
         }
     }

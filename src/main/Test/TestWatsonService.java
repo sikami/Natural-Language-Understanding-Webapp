@@ -10,20 +10,7 @@ public class TestWatsonService {
 
     private WatsonService watsonService;
 
-    @Test
-    public void testIfCanConnectToWatsonForEmotion() {
-        assertTrue(WatsonService.optionChooser("Emotion"));
-    }
 
-    @Test
-    public void testIfCanConnectToWatsonForSyntax() {
-        assertTrue(WatsonService.optionChooser("Syntax"));
-    }
-
-    @Test
-    public void testIfCannotConnectToWatsonOtherThanSyntaxAndEmotion() {
-        assertFalse(WatsonService.optionChooser("Happiness"));
-    }
 
     @Test
     public void testIfWatsonControllerHasMoreThan1Keywords() {

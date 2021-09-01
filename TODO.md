@@ -14,3 +14,4 @@ To connect to watson:
 5. Create Emotion result class
 6. create method to parse Json array, and objects
 7. Logging error is needed
+8. [OK] moving Syntax or Emotion option to Query instead in the service
