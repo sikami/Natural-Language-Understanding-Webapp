@@ -12,6 +12,7 @@ public class WatsonService {
     }
 
 
+    //moving this to query
     public static boolean optionChooser(String option) {
         if (option.equals("Emotion") || option.equals("Syntax")) {
             return true;

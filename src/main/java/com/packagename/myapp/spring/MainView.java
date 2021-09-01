@@ -29,6 +29,9 @@ public class MainView extends VerticalLayout {
     RadioButtonGroup<String> analyze;
     TextField keywordField;
 
+    @Autowired
+    private Query query;
+
     public MainView(@Autowired MessageBean bean) {
         setDefaultHorizontalComponentAlignment(Alignment.CENTER);
         setSizeFull();
@@ -79,6 +82,8 @@ public class MainView extends VerticalLayout {
                 add(keywordField);
                 add(button);
                 buttonListener(button, "Emotion");
+
+
             } else {
                 remove(button);
                 remove(keywordLabel);
@@ -89,6 +94,7 @@ public class MainView extends VerticalLayout {
         });
 
         button.addClickListener(event -> {
+            query = new Query(textArea.getValue(), keywordField.getValue());
            addResult();
         });
 
@@ -105,6 +111,7 @@ public class MainView extends VerticalLayout {
                 textArea.setEnabled(false);
                 System.out.println("emotion is selected");
                 button.setEnabled(false);
+                query.setOption("Emotion");
             });
         } else if (option.equals("Syntax")) {
             button.addClickListener(event -> {
@@ -113,6 +120,7 @@ public class MainView extends VerticalLayout {
                 textArea.setEnabled(false);
                 System.out.println("Syntax is selected");
                 button.setEnabled(false);
+                query.setOption("Syntax");
             });
         }
     }
@@ -122,6 +130,7 @@ public class MainView extends VerticalLayout {
         resultArea.setReadOnly(true);
         resultArea.setSizeFull();
         add(resultArea);
+        resultArea.setValue(query.getText() + " keyword: " + query.getKeyword());
     }
 
     public TextArea getTextArea() {

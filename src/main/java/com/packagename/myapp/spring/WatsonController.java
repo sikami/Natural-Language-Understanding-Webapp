@@ -1,6 +1,10 @@
 package com.packagename.myapp.spring;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 public class WatsonController {
+
+    @Autowired
     private Query query;
 
     public WatsonController() {

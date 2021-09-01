@@ -1,8 +1,12 @@
 package com.packagename.myapp.spring;
 
+import org.springframework.stereotype.Service;
+
+@Service
 public class Query {
     private String text;
     private String keywords;
+    private String option;
 
     public Query() {
     }
@@ -30,5 +34,13 @@ public class Query {
 
     public String getText() {
         return this.text;
+    }
+
+    public String getOption() {
+        return option;
+    }
+
+    public void setOption(String option) {
+        this.option = option;
     }
 }

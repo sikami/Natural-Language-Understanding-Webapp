@@ -1,14 +1,17 @@
 import com.packagename.myapp.spring.Query;
 import com.packagename.myapp.spring.WatsonController;
+import com.packagename.myapp.spring.WatsonService;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class TestWatsonController {
 
     private WatsonController watsonController;
+
     private Query query;
 
     @BeforeEach
@@ -17,6 +20,17 @@ public class TestWatsonController {
         watsonController = new WatsonController(query);
     }
 
+    @Test
+    public void testIfCanConnectToWatsonForSyntax() {
+        query.setOption("Syntax");
+        assertEquals("Syntax", watsonController.getQuery().getOption());
+    }
+
+    @Test
+    public void testIfCanConnectToWatsonForEmotion() {
+        query.setOption("Emotion");
+        assertEquals("Emotion", watsonController.getQuery().getOption());
+    }
 
     @Test
     public void testIfQueryHasKeywords() {
