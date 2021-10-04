@@ -4,6 +4,7 @@ import com.ibm.cloud.sdk.core.security.IamAuthenticator;
 import com.ibm.watson.natural_language_understanding.v1.NaturalLanguageUnderstanding;
 import com.ibm.watson.natural_language_understanding.v1.model.*;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,9 +15,10 @@ public class WatsonService {
     private IamAuthenticator authenticator;
     private NaturalLanguageUnderstanding naturalLanguageUnderstanding;
 
-    public WatsonService(WatsonController watsonController) {
+    public WatsonService(WatsonController watsonController) throws IOException {
         this.watsonController = watsonController;
         this.passwordReader = new PasswordReader();
+        this.passwordReader.read("src/main/resources/config");
         this.authenticator = new IamAuthenticator(passwordReader.getApiKey());
         this.naturalLanguageUnderstanding = new NaturalLanguageUnderstanding("2021-08-01", authenticator);
     }
@@ -47,7 +49,7 @@ public class WatsonService {
         return keywords;
     }
 
-    public AnalysisResults connectToWatson(WatsonController watsonController) {
+    public AnalysisResults connectToWatson() {
         naturalLanguageUnderstanding.setServiceUrl(passwordReader.getUrl());
         AnalysisResults results = null;
 

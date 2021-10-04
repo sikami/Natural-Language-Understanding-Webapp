@@ -8,6 +8,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,7 +45,7 @@ public class TestMainView {
     }
 
     @Test
-    public void testIfKeywordsCanBeRetrievedAndParsed() {
+    public void testIfKeywordsCanBeRetrievedAndParsed() throws IOException {
         query = new Query();
         query.setKeywords("banana, apples, carrots");
         watsonController = new WatsonController();
