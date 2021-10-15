@@ -1,12 +1,13 @@
 package com.packagename.myapp.spring;
 
+
 import com.ibm.cloud.sdk.core.security.IamAuthenticator;
+import com.ibm.watson.discovery.v1.Discovery;
 import com.ibm.watson.natural_language_understanding.v1.NaturalLanguageUnderstanding;
 import com.ibm.watson.natural_language_understanding.v1.model.*;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class WatsonService {
 
@@ -19,8 +20,7 @@ public class WatsonService {
         this.watsonController = watsonController;
         this.passwordReader = new PasswordReader();
         this.passwordReader.read("src/main/resources/config");
-        this.authenticator = new IamAuthenticator(passwordReader.getApiKey());
-        this.naturalLanguageUnderstanding = new NaturalLanguageUnderstanding("2021-08-01", authenticator);
+
     }
 
 
@@ -50,7 +50,14 @@ public class WatsonService {
     }
 
     public AnalysisResults connectToWatson() {
-        naturalLanguageUnderstanding.setServiceUrl(passwordReader.getUrl());
+        this.authenticator = new IamAuthenticator.Builder().apikey(passwordReader.getApiKey()).url(passwordReader.getUrl())
+
+                .build();
+//        Discovery discovery = new Discovery("2019-04-30", authenticator);
+//        discovery.setServiceUrl(passwordReader.getUrl());
+
+        this.naturalLanguageUnderstanding = new NaturalLanguageUnderstanding("2021-08-01", authenticator);
+        this.naturalLanguageUnderstanding.setServiceUrl(passwordReader.getUrl());
         AnalysisResults results = null;
 
         if (watsonController.getQuery().getOption().contains("Syntax")) {

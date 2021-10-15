@@ -16,8 +16,7 @@ public class TestWatsonService {
     public void testIfWatsonControllerHasMoreThan1Keywords() throws IOException {
         Query query = new Query("I love banana", "love,banana, apple");
         WatsonController watsonController = new WatsonController(query);
-
-        this.watsonService = new WatsonService(watsonController);
+        watsonService = new WatsonService(watsonController);
         List<String> result = watsonService.parseKeyword();
 
         assertTrue(result.size() == 3);
@@ -29,7 +28,7 @@ public class TestWatsonService {
         Query query = new Query("I love banana", "Love,Banana, Apple");
         WatsonController watsonController = new WatsonController(query);
 
-        this.watsonService = new WatsonService(watsonController);
+        watsonService = new WatsonService(watsonController);
         List<String> result = watsonService.parseKeyword();
         assertEquals("apple", result.get(2));
     }
@@ -39,19 +38,20 @@ public class TestWatsonService {
         Query query = new Query("I love banana", "");
         WatsonController watsonController = new WatsonController(query);
 
-        this.watsonService = new WatsonService(watsonController);
+        watsonService = new WatsonService(watsonController);
         List<String> result = watsonService.parseKeyword();
         assertNotNull(result);
     }
 
-//    @Test
-//    public void testIfWatsonCanConnectIBMAndProduceNotNullResult() throws IOException {
-//        Query query = new Query("I love banana", "");
-//        query.setOption("Syntax");
-//        WatsonController watsonController = new WatsonController(query);
-//        this.watsonService = new WatsonService(watsonController);
-//
-//        AnalysisResults analysisResults = this.watsonService.connectToWatson();
-//
-//    }
+    @Test
+    public void testIfWatsonCanConnectIBMAndProduceNotNullResult() throws IOException {
+        Query query = new Query("I love banana", "");
+        query.setOption("Syntax");
+        WatsonController watsonController = new WatsonController(query);
+        watsonService = new WatsonService(watsonController);
+
+        AnalysisResults analysisResults = watsonService.connectToWatson();
+        assertNotNull(analysisResults);
+
+    }
 }
