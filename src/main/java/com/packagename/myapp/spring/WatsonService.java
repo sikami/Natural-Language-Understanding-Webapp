@@ -1,6 +1,8 @@
 package com.packagename.myapp.spring;
 
 
+import com.ibm.cloud.sdk.core.security.Authenticator;
+import com.ibm.cloud.sdk.core.security.BearerTokenAuthenticator;
 import com.ibm.cloud.sdk.core.security.IamAuthenticator;
 import com.ibm.watson.discovery.v1.Discovery;
 import com.ibm.watson.natural_language_understanding.v1.NaturalLanguageUnderstanding;
@@ -13,8 +15,7 @@ public class WatsonService {
 
     private WatsonController watsonController;
     private PasswordReader passwordReader;
-    private IamAuthenticator authenticator;
-    private NaturalLanguageUnderstanding naturalLanguageUnderstanding;
+
 
     public WatsonService(WatsonController watsonController) throws IOException {
         this.watsonController = watsonController;
@@ -49,15 +50,22 @@ public class WatsonService {
         return keywords;
     }
 
+    /**
+     * No need to authenticate with IAMAuthenticator no more, use Authenticator class and instantiate BearerTokenAuthenticator(string access token)
+     * BearerTokenAuthenticator needs access token which can be accessed via curl:
+     * curl -X POST     "https://iam.cloud.ibm.com/identity/token"     -H "content-type: application/x-www-form-urlencoded"     -H "accept: application/json"     -d 'grant_type=urn%3Aibm%3Aparams%3Aoauth%3Agrant-type%3Aapikey&apikey=<API_KEY>' > token.json
+     *
+     * access token needs to be taken every so often as it expires.
+     */
     public AnalysisResults connectToWatson() {
-        this.authenticator = new IamAuthenticator.Builder().apikey(passwordReader.getApiKey()).url(passwordReader.getUrl())
-
+        Authenticator authenticator = new IamAuthenticator.Builder().apikey(passwordReader.getApiKey())
+                .url(passwordReader.getUrl())
                 .build();
-//        Discovery discovery = new Discovery("2019-04-30", authenticator);
-//        discovery.setServiceUrl(passwordReader.getUrl());
 
-        this.naturalLanguageUnderstanding = new NaturalLanguageUnderstanding("2021-08-01", authenticator);
-        this.naturalLanguageUnderstanding.setServiceUrl(passwordReader.getUrl());
+
+        Authenticator accessTokenRequest = new BearerTokenAuthenticator(passwordReader.getAccessToken());
+        NaturalLanguageUnderstanding service = new NaturalLanguageUnderstanding("2021-08-01", accessTokenRequest);
+        service.setServiceUrl(passwordReader.getUrl());
         AnalysisResults results = null;
 
         if (watsonController.getQuery().getOption().contains("Syntax")) {
@@ -70,7 +78,7 @@ public class WatsonService {
                     .text(watsonController.getText())
                     .features(features)
                     .build();
-            results = naturalLanguageUnderstanding.analyze(parameters)
+            results = service.analyze(parameters)
                     .execute()
                     .getResult();
 
@@ -92,7 +100,7 @@ public class WatsonService {
                     .features(features)
                     .build();
 
-            results = naturalLanguageUnderstanding.analyze(analyzeOptions)
+            results = service.analyze(analyzeOptions)
                     .execute()
                     .getResult();
 

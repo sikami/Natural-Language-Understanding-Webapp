@@ -45,7 +45,7 @@ public class TestWatsonService {
 
     @Test
     public void testIfWatsonCanConnectIBMAndProduceNotNullResult() throws IOException {
-        Query query = new Query("I love banana", "");
+        Query query = new Query("I love banana, and I do not like Apple. However, everything is well. I can still eat food. I am happy.", "");
         query.setOption("Syntax");
         WatsonController watsonController = new WatsonController(query);
         watsonService = new WatsonService(watsonController);

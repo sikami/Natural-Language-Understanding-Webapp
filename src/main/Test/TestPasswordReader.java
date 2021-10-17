@@ -24,7 +24,13 @@ public class TestPasswordReader {
 
     @Test
     public void testIfFirstLineIsApiKey() throws IOException {
-        passwordReader.read("src/main/resources/config");
+        passwordReader.read(path);
         assertEquals(44, passwordReader.getApiKey().length());
+    }
+
+    @Test
+    public void testIfAccessTokenIsPresent() throws IOException {
+        passwordReader.read(path);
+        assertEquals(1748, passwordReader.getAccessToken().length());
     }
 }

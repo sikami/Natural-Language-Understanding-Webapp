@@ -7,6 +7,7 @@ public class PasswordReader {
 
     private String apiKey;
     private String url;
+    private String accessToken;
 
     public boolean isExist(String config) {
         File toRead = new File(String.valueOf(Path.of(config)));
@@ -24,6 +25,8 @@ public class PasswordReader {
         return url;
     }
 
+    public String getAccessToken() { return accessToken;}
+
     public boolean read(String config) throws IOException {
 
         if(isExist(config)) {
@@ -35,12 +38,16 @@ public class PasswordReader {
                 keys = input.split(" ");
                 if (input.contains("APIKEY")) {
                     apiKey = keys[1];
-                } else {
+                } else if (input.contains("URL")){
                     url = keys[1];
+                } else {
+                    accessToken = keys[1];
                 }
             }
             return true;
         }
         return false;
     }
+
+
 }
