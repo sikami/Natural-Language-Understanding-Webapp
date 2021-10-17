@@ -27,16 +27,13 @@ public class WatsonService {
 
     //moving this to query
     public static boolean optionChooser(String option) {
-        if (option.equals("Emotion") || option.equals("Syntax")) {
-            return true;
-        }
-        return false;
+        return option.equals("Emotion") || option.equals("Syntax");
     }
 
     /**
      * This method populates keywords. Important for Query to be declared in WatsonController.
      * Method has to be executed everytime we want to send for keyword to IBM
-     * @return
+     *
      */
     public List<String> parseKeyword() {
         List<String> keywords = new ArrayList<>();
@@ -58,10 +55,6 @@ public class WatsonService {
      * access token needs to be taken every so often as it expires.
      */
     public AnalysisResults connectToWatson() {
-        Authenticator authenticator = new IamAuthenticator.Builder().apikey(passwordReader.getApiKey())
-                .url(passwordReader.getUrl())
-                .build();
-
 
         Authenticator accessTokenRequest = new BearerTokenAuthenticator(passwordReader.getAccessToken());
         NaturalLanguageUnderstanding service = new NaturalLanguageUnderstanding("2021-08-01", accessTokenRequest);
