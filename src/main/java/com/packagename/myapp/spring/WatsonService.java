@@ -53,6 +53,8 @@ public class WatsonService {
      * curl -X POST     "https://iam.cloud.ibm.com/identity/token"     -H "content-type: application/x-www-form-urlencoded"     -H "accept: application/json"     -d 'grant_type=urn%3Aibm%3Aparams%3Aoauth%3Agrant-type%3Aapikey&apikey=<API_KEY>' > token.json
      *
      * access token needs to be taken every so often as it expires.
+     * more info:
+     * https://cloud.ibm.com/docs/key-protect?topic=key-protect-retrieve-access-token
      */
     public AnalysisResults connectToWatson() {
 
