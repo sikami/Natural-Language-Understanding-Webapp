@@ -5,6 +5,7 @@
 .classpath
 /src/main/webapp/frontend-es*/
 config
+ibm-credentials.env
 *.iml
 .DS_Store
 README.md
