@@ -9,6 +9,15 @@ public class Emotion {
     private Double disgust;
     private Double anger;
 
+    public Emotion(String word, Double sadness, Double joy, Double fear, Double disgust, Double anger) {
+        this.word = word;
+        this.sadness = sadness;
+        this.joy = joy;
+        this.fear = fear;
+        this.disgust = disgust;
+        this.anger = anger;
+    }
+
     public String getWord() {
         return word;
     }
