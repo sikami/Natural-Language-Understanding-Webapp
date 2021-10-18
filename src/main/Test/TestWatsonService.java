@@ -19,7 +19,7 @@ public class TestWatsonService {
         watsonService = new WatsonService(watsonController);
         List<String> result = watsonService.parseKeyword();
 
-        assertTrue(result.size() == 3);
+        assertEquals(3, result.size());
 
     }
 
@@ -44,9 +44,21 @@ public class TestWatsonService {
     }
 
     @Test
-    public void testIfWatsonCanConnectIBMAndProduceNotNullResult() throws IOException {
+    public void testIfWatsonCanConnectIBMAndProduceNotNullResultForSyntax() throws IOException {
         Query query = new Query("I love banana, and I do not like Apple. However, everything is well. I can still eat food. I am happy.", "");
         query.setOption("Syntax");
+        WatsonController watsonController = new WatsonController(query);
+        watsonService = new WatsonService(watsonController);
+
+        AnalysisResults analysisResults = watsonService.connectToWatson();
+        assertNotNull(analysisResults);
+
+    }
+
+    @Test
+    public void testIfWatsonCanConnectIBMAndProduceNotNullResultForEmotion() throws IOException {
+        Query query = new Query("I love banana, and I do not like Apple. However, everything is well. I can still eat food. I am happy.", "Apple, food");
+        query.setOption("Emotion");
         WatsonController watsonController = new WatsonController(query);
         watsonService = new WatsonService(watsonController);
 
