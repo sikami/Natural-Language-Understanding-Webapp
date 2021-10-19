@@ -79,7 +79,6 @@ public class TestWatsonService {
 
         AnalysisResults analysisResults = watsonService.connectToWatson();
 
-        //to be refactored to watsonservice
         String result = analysisResults.getEmotion().getTargets().toString();
         JsonArray jsonArray = new JsonParser().parse(result).getAsJsonArray();
         assertTrue(jsonArray.isJsonArray());
@@ -105,7 +104,7 @@ public class TestWatsonService {
                 assertEquals(0.040087, jsonObjectChildren.get("anger").getAsDouble());
             }
         }
-
     }
+
 
 }
