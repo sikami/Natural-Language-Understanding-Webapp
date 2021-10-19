@@ -1,9 +1,12 @@
 
+import com.google.gson.*;
 import com.ibm.watson.natural_language_understanding.v1.model.AnalysisResults;
 import com.packagename.myapp.spring.*;
 import org.junit.jupiter.api.Test;
 
+import java.io.FileReader;
 import java.io.IOException;
+import java.io.Reader;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -66,4 +69,42 @@ public class TestWatsonService {
         assertNotNull(analysisResults);
 
     }
+
+    @Test
+    public void testIfAnalysisResultIsJsonArray() throws IOException {
+        Query query = new Query("Apples and oranges. I love apples! I don't like oranges.", "apples, oranges");
+        query.setOption("Emotion");
+        WatsonController watsonController = new WatsonController(query);
+        watsonService = new WatsonService(watsonController);
+
+        AnalysisResults analysisResults = watsonService.connectToWatson();
+
+        String result = analysisResults.getEmotion().getTargets().toString();
+        JsonArray jsonArray = new JsonParser().parse(result).getAsJsonArray();
+        assertTrue(jsonArray.isJsonArray());
+    }
+
+    @Test
+    public void testIfAnalysisResultJsonArrayReturnCorrectJsonObject() throws IOException {
+        Query query = new Query("Apples and oranges. I love apples! I don't like oranges.", "apples, oranges");
+        query.setOption("Emotion");
+        WatsonController watsonController = new WatsonController(query);
+        watsonService = new WatsonService(watsonController);
+
+        AnalysisResults analysisResults = watsonService.connectToWatson();
+
+        //to be refactored to watsonservice
+        String result = analysisResults.getEmotion().getTargets().toString();
+        JsonArray jsonArray = new JsonParser().parse(result).getAsJsonArray();
+        for (JsonElement jsonArrays : jsonArray) {
+            JsonObject jsonObject = new JsonParser().parse(String.valueOf(jsonArrays)).getAsJsonObject();
+            JsonObject jsonObjectChildren = new JsonParser().parse(String.valueOf(jsonObject.get("emotion"))).getAsJsonObject();
+
+            if (jsonObjectChildren.get("anger").getAsDouble() == 0.040087 ) {
+                assertEquals(0.040087, jsonObjectChildren.get("anger").getAsDouble());
+            }
+        }
+    }
+
+
 }

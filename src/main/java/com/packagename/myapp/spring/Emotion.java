@@ -9,6 +9,9 @@ public class Emotion {
     private Double disgust;
     private Double anger;
 
+    public Emotion() {
+    }
+
     public Emotion(String word, Double sadness, Double joy, Double fear, Double disgust, Double anger) {
         this.word = word;
         this.sadness = sadness;
@@ -40,6 +43,30 @@ public class Emotion {
 
     public Double getAnger() {
         return anger;
+    }
+
+    public void setWord(String word) {
+        this.word = word;
+    }
+
+    public void setSadness(Double sadness) {
+        this.sadness = sadness;
+    }
+
+    public void setJoy(Double joy) {
+        this.joy = joy;
+    }
+
+    public void setFear(Double fear) {
+        this.fear = fear;
+    }
+
+    public void setDisgust(Double disgust) {
+        this.disgust = disgust;
+    }
+
+    public void setAnger(Double anger) {
+        this.anger = anger;
     }
 
     public String toString() {

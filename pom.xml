@@ -96,6 +96,12 @@
             <version>1.10.19</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>com.vaadin.external.google</groupId>
+            <artifactId>android-json</artifactId>
+            <version>20201115</version>
+            <scope>test</scope>
+        </dependency>
 
 
     </dependencies>

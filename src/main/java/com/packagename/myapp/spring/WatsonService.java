@@ -1,12 +1,14 @@
 package com.packagename.myapp.spring;
 
 
+import com.google.gson.*;
 import com.ibm.cloud.sdk.core.security.Authenticator;
 import com.ibm.cloud.sdk.core.security.BearerTokenAuthenticator;
 import com.ibm.cloud.sdk.core.security.IamAuthenticator;
 import com.ibm.watson.discovery.v1.Discovery;
 import com.ibm.watson.natural_language_understanding.v1.NaturalLanguageUnderstanding;
 import com.ibm.watson.natural_language_understanding.v1.model.*;
+import netscape.javascript.JSObject;
 
 import java.io.IOException;
 import java.util.*;
@@ -102,6 +104,42 @@ public class WatsonService {
         }
 
         return results;
+    }
+
+    public List<Emotion> parseEmotion(AnalysisResults analysisResults) {
+        List<Emotion> emotionList = new ArrayList<>();
+        Double sadness;
+        Double joy;
+        Double fear;
+        Double disgust;
+        Double anger;
+        String text;
+
+        List<Emotion> listOfEmotions = new ArrayList<>();
+        String result = analysisResults.getEmotion().getTargets().toString();
+
+        JsonArray jsonArray = new JsonParser().parse(result).getAsJsonArray();
+        for (JsonElement jsonElement : jsonArray) {
+
+            try {
+                JsonObject jsonObj = new JsonParser().parse(String.valueOf(jsonElement)).getAsJsonObject();
+                text = jsonObj.get("text").getAsString();
+
+                JsonObject jsonObjectChildren = new JsonParser().parse(String.valueOf(jsonObj.get("emotion"))).getAsJsonObject();
+                anger = jsonObjectChildren.get("anger").getAsDouble();
+                disgust = jsonObjectChildren.get("disgust").getAsDouble();
+                fear = jsonObjectChildren.get("fear").getAsDouble();
+                joy = jsonObjectChildren.get("joy").getAsDouble();
+                sadness = jsonObjectChildren.get("sadness").getAsDouble();
+
+                listOfEmotions.add(new Emotion(text,sadness, joy, fear, disgust, anger));
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        }
+        return listOfEmotions;
     }
 
 }
