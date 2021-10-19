@@ -1,12 +1,16 @@
 package com.packagename.myapp.spring;
 
 
+import com.google.gson.Gson;
 import com.ibm.cloud.sdk.core.security.Authenticator;
 import com.ibm.cloud.sdk.core.security.BearerTokenAuthenticator;
 import com.ibm.cloud.sdk.core.security.IamAuthenticator;
 import com.ibm.watson.discovery.v1.Discovery;
 import com.ibm.watson.natural_language_understanding.v1.NaturalLanguageUnderstanding;
 import com.ibm.watson.natural_language_understanding.v1.model.*;
+import elemental.json.JsonArray;
+import elemental.json.JsonObject;
+import netscape.javascript.JSObject;
 
 import java.io.IOException;
 import java.util.*;
@@ -102,6 +106,17 @@ public class WatsonService {
         }
 
         return results;
+    }
+
+    public List<Emotion> parseEmotion(AnalysisResults analysisResults) {
+        Emotion emotion = new Emotion();
+        List<Emotion> listOfEmotions = new ArrayList<>();
+        String result = analysisResults.getEmotion().getTargets().toString();
+
+//        JsonObject jsonObject = new Gson().fromJson(result, JsonObject.class);
+
+
+        return listOfEmotions;
     }
 
 }
