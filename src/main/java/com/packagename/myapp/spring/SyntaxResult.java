@@ -1,10 +1,10 @@
 package com.packagename.myapp.spring;
 
-public class Syntax {
+public class SyntaxResult {
     private String word;
     private String partOfSpeech;
 
-    public Syntax(String word, String partOfSpeech) {
+    public SyntaxResult(String word, String partOfSpeech) {
         this.word = word;
         this.partOfSpeech = partOfSpeech;
     }

@@ -107,12 +107,11 @@ public class WatsonService {
     }
 
     public List<Emotion> parseEmotion(AnalysisResults analysisResults) {
-        List<Emotion> emotionList = new ArrayList<>();
-        Double sadness;
-        Double joy;
-        Double fear;
-        Double disgust;
-        Double anger;
+        double sadness;
+        double joy;
+        double fear;
+        double disgust;
+        double anger;
         String text;
 
         List<Emotion> listOfEmotions = new ArrayList<>();
@@ -136,10 +135,21 @@ public class WatsonService {
 
             } catch (Exception e) {
                 e.printStackTrace();
+                System.out.println("No JsonElement to parse");
             }
 
         }
         return listOfEmotions;
     }
 
+    public List<SyntaxResult> parseSyntax(AnalysisResults analysisResults) {
+        String word;
+        String partOfSpeech;
+
+        List<SyntaxResult> syntaxResultList = new ArrayList<>();
+        String result = analysisResults.getSyntax().toString();
+
+        JsonArray jsonArray = new JsonParser().parse(result).getAsJsonArray();
+        return syntaxResultList;
+    }
 }
