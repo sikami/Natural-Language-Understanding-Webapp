@@ -20,7 +20,6 @@ public class TestWatsonService {
         List<String> result = watsonService.parseKeyword();
 
         assertEquals(3, result.size());
-
     }
 
     @Test
@@ -63,67 +62,37 @@ public class TestWatsonService {
     }
 
     @Test
-    public void testIfAnalysisResultIsJsonArray() throws IOException {
+    public void testIfAnalysisResultJsonArrayReturnCorrectEmotion() throws IOException {
         Query query = new Query("Apples and oranges. I love apples! I don't like oranges.", "apples, oranges");
         query.setOption("Emotion");
         watsonService = new WatsonService(query);
 
         AnalysisResults analysisResults = watsonService.connectToWatson();
 
-        String result = analysisResults.getEmotion().getTargets().toString();
-        JsonArray jsonArray = new JsonParser().parse(result).getAsJsonArray();
-        assertTrue(jsonArray.isJsonArray());
+        List<Emotion> emotionList = watsonService.parseEmotion(analysisResults);
+
+        for (Emotion emotion : emotionList) {
+            if (emotion.getAnger() == 0.040087) {
+                assertEquals(0.040087, emotion.getAnger());
+            }
+        }
     }
 
-    //TODO refactor this test as parseEmotion or parseSyntax now stored in waiter class
-//    @Test
-//    public void testIfAnalysisResultJsonArrayReturnCorrectJsonObjectForEmotion() throws IOException {
-//        Query query = new Query("Apples and oranges. I love apples! I don't like oranges.", "apples, oranges");
-//        query.setOption("Emotion");
-//        WatsonController watsonController = new WatsonController(query);
-//        watsonService = new WatsonService(watsonController);
-//
-//        AnalysisResults analysisResults = watsonService.connectToWatson();
-//
-//        List<Emotion> emotionList = watsonService.parseEmotion(analysisResults);
-//
-//        for (Emotion emotion : emotionList) {
-//            if (emotion.getAnger() == 0.040087) {
-//                assertEquals(0.040087, emotion.getAnger());
-//            }
-//        }
-//    }
-
     @Test
-    public void testIfAnalysisResultIsJsonObjectForSyntax() throws IOException {
+    public void testIfAnalysisResultJsonArrayReturnCorrectSyntax() throws IOException {
         Query query = new Query("With great power comes great responsibility", "");
         query.setOption("Syntax");
         watsonService = new WatsonService(query);
-
         AnalysisResults analysisResults = watsonService.connectToWatson();
 
-        String result = analysisResults.getSyntax().toString();
-        JsonObject jsonArray = new JsonParser().parse(result).getAsJsonObject();
-        assertTrue(jsonArray.isJsonObject());
-    }
+        List<SyntaxResult> syntaxResultList = watsonService.parseSyntax(analysisResults);
 
-//    @Test
-//    public void testIfAnalysisResultJsonArrayReturnCorrectJsonObjectForSyntax() throws IOException {
-//        Query query = new Query("With great power comes great responsibility", "");
-//        query.setOption("Syntax");
-//        WatsonController watsonController = new WatsonController(query);
-//        watsonService = new WatsonService(watsonController);
-//        AnalysisResults analysisResults = watsonService.connectToWatson();
-//
-//        System.out.println("analysis result from print out: \n" + analysisResults.getSyntax().getTokens().get(0));
-//        List<SyntaxResult> syntaxResultList = watsonService.parseSyntax(analysisResults);
-//
-//        for (SyntaxResult syntax : syntaxResultList) {
-//            if (syntax.getWord().contains("With")) {
-//                assertEquals("ADP", syntax.getPartOfSpeech());
-//            }
-//        }
-//    }
+        for (SyntaxResult syntax : syntaxResultList) {
+            if (syntax.getWord().contains("With")) {
+                assertEquals("ADP", syntax.getPartOfSpeech());
+            }
+        }
+    }
 
 
 

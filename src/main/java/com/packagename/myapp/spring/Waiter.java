@@ -22,4 +22,5 @@ public class Waiter {
     public void setQueryOption(String queryOption) {
         this.queryOption = queryOption;
     }
+
 }

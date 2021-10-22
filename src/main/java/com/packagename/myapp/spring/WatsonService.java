@@ -94,7 +94,7 @@ public class WatsonService {
     }
 
     //TODO why not use the existing class from Watson instead of creating my own class to contain the result
-    public Waiter parseEmotion(AnalysisResults analysisResults) {
+    public List<Emotion> parseEmotion(AnalysisResults analysisResults) {
         List<Emotion> listOfEmotions = new ArrayList<>();
         List<TargetedEmotionResults> targets = analysisResults.getEmotion().getTargets();
 
@@ -103,11 +103,10 @@ public class WatsonService {
                     targetedEmotionResults.getEmotion().getJoy(), targetedEmotionResults.getEmotion().getFear(),
                     targetedEmotionResults.getEmotion().getDisgust(), targetedEmotionResults.getEmotion().getAnger()));
         }
-        Waiter waiter = new Waiter(listOfEmotions, query.getOption());
-        return waiter;
+        return listOfEmotions;
     }
 
-    public Waiter parseSyntax(AnalysisResults analysisResults) {
+    public List<SyntaxResult> parseSyntax(AnalysisResults analysisResults) {
         List<SyntaxResult> syntaxResultList = new ArrayList<>();
         List<TokenResult> results = analysisResults.getSyntax().getTokens();
 
@@ -115,8 +114,6 @@ public class WatsonService {
             syntaxResultList.add(new SyntaxResult(tokenResult.getText(), tokenResult.getPartOfSpeech()));
         }
 
-        Waiter waiter = new Waiter(syntaxResultList);
-        waiter.setQueryOption(query.getOption());
-        return waiter;
+        return syntaxResultList;
     }
 }
