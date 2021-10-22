@@ -16,20 +16,16 @@ public class TestWatsonService {
     @Test
     public void testIfWatsonControllerHasMoreThan1Keywords() throws IOException {
         Query query = new Query("I love banana", "love,banana, apple");
-        WatsonController watsonController = new WatsonController(query);
-        watsonService = new WatsonService(watsonController);
+        watsonService = new WatsonService(query);
         List<String> result = watsonService.parseKeyword();
 
         assertEquals(3, result.size());
-
     }
 
     @Test
     public void testIfKeywordsAreAllLowerCase() throws IOException {
         Query query = new Query("I love banana", "Love,Banana, Apple");
-        WatsonController watsonController = new WatsonController(query);
-
-        watsonService = new WatsonService(watsonController);
+        watsonService = new WatsonService(query);
         List<String> result = watsonService.parseKeyword();
         assertEquals("apple", result.get(2));
     }
@@ -37,9 +33,8 @@ public class TestWatsonService {
     @Test
     public void testIfParseKeywordsDontThrowNull() throws IOException {
         Query query = new Query("I love banana", "");
-        WatsonController watsonController = new WatsonController(query);
 
-        watsonService = new WatsonService(watsonController);
+        watsonService = new WatsonService(query);
         List<String> result = watsonService.parseKeyword();
         assertNotNull(result);
     }
@@ -48,8 +43,7 @@ public class TestWatsonService {
     public void testIfWatsonCanConnectIBMAndProduceNotNullResultForSyntax() throws IOException {
         Query query = new Query("I love banana, and I do not like Apple. However, everything is well. I can still eat food. I am happy.", "");
         query.setOption("Syntax");
-        WatsonController watsonController = new WatsonController(query);
-        watsonService = new WatsonService(watsonController);
+        watsonService = new WatsonService(query);
 
         AnalysisResults analysisResults = watsonService.connectToWatson();
         assertNotNull(analysisResults);
@@ -60,8 +54,7 @@ public class TestWatsonService {
     public void testIfWatsonCanConnectIBMAndProduceNotNullResultForEmotion() throws IOException {
         Query query = new Query("I love banana, and I do not like Apple. However, everything is well. I can still eat food. I am happy.", "Apple, food");
         query.setOption("Emotion");
-        WatsonController watsonController = new WatsonController(query);
-        watsonService = new WatsonService(watsonController);
+        watsonService = new WatsonService(query);
 
         AnalysisResults analysisResults = watsonService.connectToWatson();
         assertNotNull(analysisResults);
@@ -69,25 +62,10 @@ public class TestWatsonService {
     }
 
     @Test
-    public void testIfAnalysisResultIsJsonArray() throws IOException {
+    public void testIfAnalysisResultJsonArrayReturnCorrectEmotion() throws IOException {
         Query query = new Query("Apples and oranges. I love apples! I don't like oranges.", "apples, oranges");
         query.setOption("Emotion");
-        WatsonController watsonController = new WatsonController(query);
-        watsonService = new WatsonService(watsonController);
-
-        AnalysisResults analysisResults = watsonService.connectToWatson();
-
-        String result = analysisResults.getEmotion().getTargets().toString();
-        JsonArray jsonArray = new JsonParser().parse(result).getAsJsonArray();
-        assertTrue(jsonArray.isJsonArray());
-    }
-
-    @Test
-    public void testIfAnalysisResultJsonArrayReturnCorrectJsonObjectForEmotion() throws IOException {
-        Query query = new Query("Apples and oranges. I love apples! I don't like oranges.", "apples, oranges");
-        query.setOption("Emotion");
-        WatsonController watsonController = new WatsonController(query);
-        watsonService = new WatsonService(watsonController);
+        watsonService = new WatsonService(query);
 
         AnalysisResults analysisResults = watsonService.connectToWatson();
 
@@ -101,28 +79,12 @@ public class TestWatsonService {
     }
 
     @Test
-    public void testIfAnalysisResultIsJsonObjectForSyntax() throws IOException {
+    public void testIfAnalysisResultJsonArrayReturnCorrectSyntax() throws IOException {
         Query query = new Query("With great power comes great responsibility", "");
         query.setOption("Syntax");
-        WatsonController watsonController = new WatsonController(query);
-        watsonService = new WatsonService(watsonController);
-
+        watsonService = new WatsonService(query);
         AnalysisResults analysisResults = watsonService.connectToWatson();
 
-        String result = analysisResults.getSyntax().toString();
-        JsonObject jsonArray = new JsonParser().parse(result).getAsJsonObject();
-        assertTrue(jsonArray.isJsonObject());
-    }
-
-    @Test
-    public void testIfAnalysisResultJsonArrayReturnCorrectJsonObjectForSyntax() throws IOException {
-        Query query = new Query("   With great power comes great responsibility", "");
-        query.setOption("Syntax");
-        WatsonController watsonController = new WatsonController(query);
-        watsonService = new WatsonService(watsonController);
-        AnalysisResults analysisResults = watsonService.connectToWatson();
-
-        System.out.println("analysis result from print out: \n" + analysisResults.getSyntax().getTokens().get(0));
         List<SyntaxResult> syntaxResultList = watsonService.parseSyntax(analysisResults);
 
         for (SyntaxResult syntax : syntaxResultList) {

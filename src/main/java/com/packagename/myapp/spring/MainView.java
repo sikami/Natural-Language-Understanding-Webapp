@@ -131,6 +131,9 @@ public class MainView extends VerticalLayout {
         resultArea.setSizeFull();
         add(resultArea);
         resultArea.setValue(query.getText() + " keyword: " + query.getKeyword());
+
+        //TODO find a way to display the result here without having to instantiate watson service
+
     }
 
     public TextArea getTextArea() {

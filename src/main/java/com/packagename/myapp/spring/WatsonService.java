@@ -1,35 +1,25 @@
 package com.packagename.myapp.spring;
 
 
-import com.google.gson.*;
 import com.ibm.cloud.sdk.core.security.Authenticator;
 import com.ibm.cloud.sdk.core.security.BearerTokenAuthenticator;
-import com.ibm.cloud.sdk.core.security.IamAuthenticator;
-import com.ibm.watson.discovery.v1.Discovery;
 import com.ibm.watson.natural_language_understanding.v1.NaturalLanguageUnderstanding;
 import com.ibm.watson.natural_language_understanding.v1.model.*;
-import netscape.javascript.JSObject;
 
 import java.io.IOException;
 import java.util.*;
 
 public class WatsonService {
 
-    private WatsonController watsonController;
+    private Query query;
     private PasswordReader passwordReader;
 
 
-    public WatsonService(WatsonController watsonController) throws IOException {
-        this.watsonController = watsonController;
+    public WatsonService(Query query) throws IOException {
+        this.query = query;
         this.passwordReader = new PasswordReader();
         this.passwordReader.read("src/main/resources/config");
 
-    }
-
-
-    //moving this to query
-    public static boolean optionChooser(String option) {
-        return option.equals("Emotion") || option.equals("Syntax");
     }
 
     /**
@@ -39,7 +29,7 @@ public class WatsonService {
      */
     public List<String> parseKeyword() {
         List<String> keywords = new ArrayList<>();
-        String keys = watsonController.getKeyword();
+        String keys = query.getKeyword();
         String[] keyword = keys.split(",");
 
         for (String word: keyword) {
@@ -65,24 +55,21 @@ public class WatsonService {
         service.setServiceUrl(passwordReader.getUrl());
         AnalysisResults results = null;
 
-        if (watsonController.getQuery().getOption().contains("Syntax")) {
+        if (query.getOption().contains("Syntax")) {
             SyntaxOptionsTokens syntaxOptionsTokens = new SyntaxOptionsTokens.Builder().partOfSpeech(true)
                     .lemma(true).build();
 
             SyntaxOptions syntaxOptions = new SyntaxOptions.Builder().tokens(syntaxOptionsTokens).sentences(true).build();
             Features features = new Features.Builder().syntax(syntaxOptions).build();
             AnalyzeOptions parameters = new AnalyzeOptions.Builder()
-                    .text(watsonController.getText())
+                    .text(query.getText())
                     .features(features)
                     .build();
             results = service.analyze(parameters)
                     .execute()
                     .getResult();
 
-            //result is displayed in AnalysisResults
-            System.out.println(results);
-
-        } else if (watsonController.getQuery().getOption().contains("Emotion")) {
+        } else if (query.getOption().contains("Emotion")) {
             List<String> targets = parseKeyword();
             EmotionOptions emotionOptions = new EmotionOptions.Builder()
                     .targets(targets)
@@ -93,7 +80,7 @@ public class WatsonService {
                     .build();
 
             AnalyzeOptions analyzeOptions = new AnalyzeOptions.Builder()
-                    .text(watsonController.getQuery().getText())
+                    .text(query.getText())
                     .features(features)
                     .build();
 
@@ -106,40 +93,15 @@ public class WatsonService {
         return results;
     }
 
+    //TODO why not use the existing class from Watson instead of creating my own class to contain the result
     public List<Emotion> parseEmotion(AnalysisResults analysisResults) {
-        double sadness;
-        double joy;
-        double fear;
-        double disgust;
-        double anger;
-        String text;
-
-        //TODO there is better way parsing emotion
-
         List<Emotion> listOfEmotions = new ArrayList<>();
-        String result = analysisResults.getEmotion().getTargets().toString();
+        List<TargetedEmotionResults> targets = analysisResults.getEmotion().getTargets();
 
-        JsonArray jsonArray = new JsonParser().parse(result).getAsJsonArray();
-        for (JsonElement jsonElement : jsonArray) {
-
-            try {
-                JsonObject jsonObj = new JsonParser().parse(String.valueOf(jsonElement)).getAsJsonObject();
-                text = jsonObj.get("text").getAsString();
-
-                JsonObject jsonObjectChildren = new JsonParser().parse(String.valueOf(jsonObj.get("emotion"))).getAsJsonObject();
-                anger = jsonObjectChildren.get("anger").getAsDouble();
-                disgust = jsonObjectChildren.get("disgust").getAsDouble();
-                fear = jsonObjectChildren.get("fear").getAsDouble();
-                joy = jsonObjectChildren.get("joy").getAsDouble();
-                sadness = jsonObjectChildren.get("sadness").getAsDouble();
-
-                listOfEmotions.add(new Emotion(text,sadness, joy, fear, disgust, anger));
-
-            } catch (Exception e) {
-                e.printStackTrace();
-                System.out.println("No JsonElement to parse");
-            }
-
+        for (TargetedEmotionResults targetedEmotionResults: targets) {
+            listOfEmotions.add(new Emotion(targetedEmotionResults.getText(), targetedEmotionResults.getEmotion().getSadness(),
+                    targetedEmotionResults.getEmotion().getJoy(), targetedEmotionResults.getEmotion().getFear(),
+                    targetedEmotionResults.getEmotion().getDisgust(), targetedEmotionResults.getEmotion().getAnger()));
         }
         return listOfEmotions;
     }
