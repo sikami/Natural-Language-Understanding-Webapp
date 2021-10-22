@@ -114,6 +114,8 @@ public class WatsonService {
         double anger;
         String text;
 
+        //TODO there is better way parsing emotion
+
         List<Emotion> listOfEmotions = new ArrayList<>();
         String result = analysisResults.getEmotion().getTargets().toString();
 
@@ -143,13 +145,13 @@ public class WatsonService {
     }
 
     public List<SyntaxResult> parseSyntax(AnalysisResults analysisResults) {
-        String word;
-        String partOfSpeech;
-
         List<SyntaxResult> syntaxResultList = new ArrayList<>();
-        String result = analysisResults.getSyntax().toString();
+        List<TokenResult> results = analysisResults.getSyntax().getTokens();
 
-        JsonArray jsonArray = new JsonParser().parse(result).getAsJsonArray();
+        for (TokenResult tokenResult : results) {
+            syntaxResultList.add(new SyntaxResult(tokenResult.getText(), tokenResult.getPartOfSpeech()));
+        }
+
         return syntaxResultList;
     }
 }

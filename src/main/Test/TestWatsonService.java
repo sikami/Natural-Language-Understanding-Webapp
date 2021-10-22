@@ -114,24 +114,24 @@ public class TestWatsonService {
         assertTrue(jsonArray.isJsonObject());
     }
 
-//    @Test
-//    public void testIfAnalysisResultJsonArrayReturnCorrectJsonObjectForSyntax() throws IOException {
-//        Query query = new Query("   With great power comes great responsibility", "");
-//        query.setOption("Syntax");
-//        WatsonController watsonController = new WatsonController(query);
-//        watsonService = new WatsonService(watsonController);
-//
-//        AnalysisResults analysisResults = watsonService.connectToWatson();
-//
-//        System.out.println("analysis result from print out: \n" + analysisResults.getSyntax().getTokens().get(0));
-////        List<SyntaxResult> syntaxResultList = watsonService.parseSyntax(analysisResults);
-//
-////        for (SyntaxResult syntax : syntaxResultList) {
-////            if (syntax.getWord().contains("With")) {
-////                assertEquals("ADP", syntax.getPartOfSpeech());
-////            }
-////        }
-//    }
+    @Test
+    public void testIfAnalysisResultJsonArrayReturnCorrectJsonObjectForSyntax() throws IOException {
+        Query query = new Query("   With great power comes great responsibility", "");
+        query.setOption("Syntax");
+        WatsonController watsonController = new WatsonController(query);
+        watsonService = new WatsonService(watsonController);
+        AnalysisResults analysisResults = watsonService.connectToWatson();
+
+        System.out.println("analysis result from print out: \n" + analysisResults.getSyntax().getTokens().get(0));
+        List<SyntaxResult> syntaxResultList = watsonService.parseSyntax(analysisResults);
+
+        for (SyntaxResult syntax : syntaxResultList) {
+            if (syntax.getWord().contains("With")) {
+                assertEquals("ADP", syntax.getPartOfSpeech());
+            }
+        }
+    }
+
 
 
 }
