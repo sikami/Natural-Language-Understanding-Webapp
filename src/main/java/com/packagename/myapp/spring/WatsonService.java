@@ -107,39 +107,13 @@ public class WatsonService {
     }
 
     public List<Emotion> parseEmotion(AnalysisResults analysisResults) {
-        double sadness;
-        double joy;
-        double fear;
-        double disgust;
-        double anger;
-        String text;
-
-        //TODO there is better way parsing emotion
-
         List<Emotion> listOfEmotions = new ArrayList<>();
-        String result = analysisResults.getEmotion().getTargets().toString();
+        List<TargetedEmotionResults> targets = analysisResults.getEmotion().getTargets();
 
-        JsonArray jsonArray = new JsonParser().parse(result).getAsJsonArray();
-        for (JsonElement jsonElement : jsonArray) {
-
-            try {
-                JsonObject jsonObj = new JsonParser().parse(String.valueOf(jsonElement)).getAsJsonObject();
-                text = jsonObj.get("text").getAsString();
-
-                JsonObject jsonObjectChildren = new JsonParser().parse(String.valueOf(jsonObj.get("emotion"))).getAsJsonObject();
-                anger = jsonObjectChildren.get("anger").getAsDouble();
-                disgust = jsonObjectChildren.get("disgust").getAsDouble();
-                fear = jsonObjectChildren.get("fear").getAsDouble();
-                joy = jsonObjectChildren.get("joy").getAsDouble();
-                sadness = jsonObjectChildren.get("sadness").getAsDouble();
-
-                listOfEmotions.add(new Emotion(text,sadness, joy, fear, disgust, anger));
-
-            } catch (Exception e) {
-                e.printStackTrace();
-                System.out.println("No JsonElement to parse");
-            }
-
+        for (TargetedEmotionResults targetedEmotionResults: targets) {
+            listOfEmotions.add(new Emotion(targetedEmotionResults.getText(), targetedEmotionResults.getEmotion().getSadness(),
+                    targetedEmotionResults.getEmotion().getJoy(), targetedEmotionResults.getEmotion().getFear(),
+                    targetedEmotionResults.getEmotion().getDisgust(), targetedEmotionResults.getEmotion().getAnger()));
         }
         return listOfEmotions;
     }
