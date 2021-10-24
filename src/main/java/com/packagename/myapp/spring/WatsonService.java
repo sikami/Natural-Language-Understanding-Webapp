@@ -25,7 +25,7 @@ public class WatsonService {
     }
 
     /**
-     * This method populates keywords. Important for Query to be declared in WatsonController.
+     * This method populates keywords.
      * Method has to be executed everytime we want to send for keyword to IBM
      *
      */

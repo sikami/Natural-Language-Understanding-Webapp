@@ -18,3 +18,5 @@ To connect to watson:
 9. public parseKeyword() in watson service needs to be refactored so its private, fix related problems
 10. change Syntax and Emotion option to Enum
 11. need to catch an error when forgot to setOption in query. When there is not keyword in the query, assume that its selecting syntax
+12. need to catch error if selecting emotion, text has to be long at least 100 words
+13. need to catch error if unauthorization exists, that means need to change the access token
