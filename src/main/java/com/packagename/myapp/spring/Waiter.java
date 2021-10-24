@@ -1,5 +1,6 @@
 package com.packagename.myapp.spring;
 
+import com.ibm.watson.natural_language_understanding.v1.model.AnalysisResults;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.IOException;
@@ -21,5 +22,11 @@ public class Waiter {
         this.watsonService = new WatsonService(query);
     }
 
+    public List<Emotion> spitEmotionResponse() {
+        AnalysisResults analysisResults = this.watsonService.connectToWatson();
+        List<Emotion> emotionList = this.watsonService.parseEmotion(analysisResults);
 
+        return emotionList;
+
+    }
 }
