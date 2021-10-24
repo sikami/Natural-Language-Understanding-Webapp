@@ -29,4 +29,10 @@ public class Waiter {
         return emotionList;
 
     }
+
+    public List<SyntaxResult> spitSyntaxResponse() {
+        AnalysisResults analysisResults = this.watsonService.connectToWatson();
+        List<SyntaxResult> syntaxResultList = this.watsonService.parseSyntax(analysisResults);
+        return syntaxResultList;
+    }
 }

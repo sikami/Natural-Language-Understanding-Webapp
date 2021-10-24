@@ -16,4 +16,4 @@ To connect to watson:
 7. Logging error is needed
 8. [OK] moving Syntax or Emotion option to Query instead in the service
 9. public parseKeyword() in watson service needs to be refactored so its private, fix related problems
-10. 
+10. change Syntax and Emotion option to Enum

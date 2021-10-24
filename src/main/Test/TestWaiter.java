@@ -1,7 +1,4 @@
-import com.packagename.myapp.spring.Emotion;
-import com.packagename.myapp.spring.Query;
-import com.packagename.myapp.spring.Waiter;
-import com.packagename.myapp.spring.WatsonService;
+import com.packagename.myapp.spring.*;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -14,13 +11,25 @@ public class TestWaiter {
     private Waiter waiter;
 
     @Test
-    public void testResultContainsResult() throws IOException {
+    public void testResultContainsEmotionResult() throws IOException {
         Query query = new Query("Apples and oranges. I love apples! I don't like oranges.", "apples");
         query.setOption("Emotion");
 
         waiter = new Waiter(query);
         List<Emotion> emotionList = waiter.spitEmotionResponse();
-        System.out.println(emotionList);
         assertFalse(emotionList.isEmpty());
     }
+
+    @Test
+    public void testResultContainsSyntaxResult() throws IOException {
+        Query query = new Query("With great power comes great responsibility", "");
+        query.setOption("Syntax");
+
+        waiter = new Waiter(query);
+        List<SyntaxResult> syntaxResponse = waiter.spitSyntaxResponse();
+        System.out.println(syntaxResponse);
+        assertFalse(syntaxResponse.isEmpty());
+    }
+
+
 }
