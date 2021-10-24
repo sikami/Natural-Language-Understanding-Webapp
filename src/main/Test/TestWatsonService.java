@@ -62,14 +62,16 @@ public class TestWatsonService {
     }
 
     @Test
-    public void testIfAnalysisResultJsonArrayReturnCorrectEmotion() throws IOException {
+    public void testIfAnalysisResultReturnCorrectEmotion() throws IOException {
         Query query = new Query("Apples and oranges. I love apples! I don't like oranges.", "apples, oranges");
         query.setOption("Emotion");
         watsonService = new WatsonService(query);
 
         AnalysisResults analysisResults = watsonService.connectToWatson();
 
+        System.out.println(analysisResults);
         List<Emotion> emotionList = watsonService.parseEmotion(analysisResults);
+
 
         for (Emotion emotion : emotionList) {
             if (emotion.getAnger() == 0.040087) {
@@ -93,6 +95,25 @@ public class TestWatsonService {
             }
         }
     }
+
+    @Test
+    public void testIfAnalysisResultDoesntReturnWordOutsideKeyword() throws IOException {
+        Query query = new Query("Apples and oranges. I love apples! I don't like oranges.", "apples");
+        query.setOption("Emotion");
+        watsonService = new WatsonService(query);
+
+        AnalysisResults analysisResults = watsonService.connectToWatson();
+
+        List<Emotion> emotionList = watsonService.parseEmotion(analysisResults);
+
+        System.out.println(emotionList);
+        for (Emotion emotion : emotionList) {
+            if (!emotion.getWord().contains("apples")) {
+                assertFalse(emotion.getWord().contains("oranges"));
+            }
+        }
+    }
+
 
 
 
