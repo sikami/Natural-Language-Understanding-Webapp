@@ -17,17 +17,15 @@ public class TestWatsonService {
     public void testIfWatsonControllerHasMoreThan1Keywords() throws IOException {
         Query query = new Query("I love banana", "love,banana, apple");
         watsonService = new WatsonService(query);
-        List<String> result = watsonService.parseKeyword();
 
-        assertEquals(3, result.size());
+        assertEquals(3, watsonService.parseKeyword().size());
     }
 
     @Test
     public void testIfKeywordsAreAllLowerCase() throws IOException {
         Query query = new Query("I love banana", "Love,Banana, Apple");
         watsonService = new WatsonService(query);
-        List<String> result = watsonService.parseKeyword();
-        assertEquals("apple", result.get(2));
+        assertEquals("apple", watsonService.parseKeyword().get(2));
     }
 
     @Test
@@ -35,8 +33,7 @@ public class TestWatsonService {
         Query query = new Query("I love banana", "");
 
         watsonService = new WatsonService(query);
-        List<String> result = watsonService.parseKeyword();
-        assertNotNull(result);
+        assertNotNull(watsonService.parseKeyword());
     }
 
     @Test
@@ -81,7 +78,7 @@ public class TestWatsonService {
     }
 
     @Test
-    public void testIfAnalysisResultJsonArrayReturnCorrectSyntax() throws IOException {
+    public void testIfAnalysisResultReturnCorrectSyntax() throws IOException {
         Query query = new Query("With great power comes great responsibility", "");
         query.setOption("Syntax");
         watsonService = new WatsonService(query);
