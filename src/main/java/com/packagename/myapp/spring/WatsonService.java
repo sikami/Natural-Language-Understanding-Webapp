@@ -5,6 +5,7 @@ import com.ibm.cloud.sdk.core.security.Authenticator;
 import com.ibm.cloud.sdk.core.security.BearerTokenAuthenticator;
 import com.ibm.watson.natural_language_understanding.v1.NaturalLanguageUnderstanding;
 import com.ibm.watson.natural_language_understanding.v1.model.*;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.IOException;
 import java.util.*;
@@ -12,9 +13,10 @@ import java.util.*;
 public class WatsonService {
 
     private Query query;
+
     private PasswordReader passwordReader;
 
-
+    @Autowired
     public WatsonService(Query query) throws IOException {
         this.query = query;
         this.passwordReader = new PasswordReader();
@@ -94,9 +96,11 @@ public class WatsonService {
     }
 
     //TODO why not use the existing class from Watson instead of creating my own class to contain the result
+    //TODO parseEmotion needs to have parse Keywords as keywords will be displayed in the result
     public List<Emotion> parseEmotion(AnalysisResults analysisResults) {
         List<Emotion> listOfEmotions = new ArrayList<>();
         List<TargetedEmotionResults> targets = analysisResults.getEmotion().getTargets();
+
 
         for (TargetedEmotionResults targetedEmotionResults: targets) {
             listOfEmotions.add(new Emotion(targetedEmotionResults.getText(), targetedEmotionResults.getEmotion().getSadness(),

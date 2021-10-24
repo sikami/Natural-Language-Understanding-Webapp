@@ -1,8 +1,8 @@
 package com.packagename.myapp.spring;
 
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
-@Service
+@Component("query")
 public class Query {
     private String text;
     private String keywords;
