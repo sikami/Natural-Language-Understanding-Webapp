@@ -20,3 +20,4 @@ To connect to watson:
 11. need to catch an error when forgot to setOption in query. When there is not keyword in the query, assume that its selecting syntax
 12. need to catch error if selecting emotion, text has to be long at least 100 words
 13. need to catch error if unauthorization exists, that means need to change the access token
+14. need to wrap the result in to the result field in Main view, possibly there is a method to do that
