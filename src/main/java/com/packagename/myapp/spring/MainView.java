@@ -136,7 +136,7 @@ public class MainView extends VerticalLayout {
     private void addResult() throws IOException {
         resultArea = new TextArea();
         resultArea.setReadOnly(true);
-        resultArea.setSizeFull();
+       // resultArea.setSizeFull();
         add(resultArea);
       //  resultArea.setValue(query.getText() + " keyword: " + query.getKeyword() + ", option: " + query.getOption());
 
@@ -146,6 +146,7 @@ public class MainView extends VerticalLayout {
             resultArea.setValue(this.waiter.spitSyntaxResponse().toString());
         } else {
             resultArea.setValue(this.waiter.spitEmotionResponse().toString());
+
         }
 
     }
