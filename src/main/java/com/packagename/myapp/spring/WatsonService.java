@@ -9,10 +9,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.IOException;
 import java.util.*;
+import java.util.logging.LogManager;
+import java.util.logging.Logger;
 
 public class WatsonService {
 
     private Query query;
+    private static Logger logger = Logger.getLogger(WatsonService.class.getName());
 
     private PasswordReader passwordReader;
 
@@ -31,12 +34,19 @@ public class WatsonService {
      */
     public List<String> parseKeyword() {
         List<String> keywords = new ArrayList<>();
-        String keys = query.getKeyword();
-        String[] keyword = keys.split(",");
 
-        for (String word: keyword) {
-            keywords.add(word.trim().toLowerCase());
+        try {
+            String keys = query.getKeyword();
+            String[] keyword = keys.split(",");
+
+            for (String word: keyword) {
+                keywords.add(word.trim().toLowerCase());
+            }
+
+        } catch (Exception e) {
+            logger.warning("Keywords cannot be parsed.");
         }
+
         return keywords;
     }
 
@@ -52,71 +62,91 @@ public class WatsonService {
      */
     public AnalysisResults connectToWatson() {
 
-        Authenticator accessTokenRequest = new BearerTokenAuthenticator(passwordReader.getAccessToken());
-        NaturalLanguageUnderstanding service = new NaturalLanguageUnderstanding("2021-08-01", accessTokenRequest);
-        service.setServiceUrl(passwordReader.getUrl());
         AnalysisResults results = null;
+        try {
+            Authenticator accessTokenRequest = new BearerTokenAuthenticator(passwordReader.getAccessToken());
+            NaturalLanguageUnderstanding service = new NaturalLanguageUnderstanding("2021-08-01", accessTokenRequest);
+            service.setServiceUrl(passwordReader.getUrl());
+            
 
-        if (query.getOption().contains("Syntax")) {
-            SyntaxOptionsTokens syntaxOptionsTokens = new SyntaxOptionsTokens.Builder().partOfSpeech(true)
-                    .lemma(true).build();
+            if (query.getOption().contains("Syntax")) {
+                SyntaxOptionsTokens syntaxOptionsTokens = new SyntaxOptionsTokens.Builder().partOfSpeech(true)
+                        .lemma(true).build();
 
-            SyntaxOptions syntaxOptions = new SyntaxOptions.Builder().tokens(syntaxOptionsTokens).sentences(true).build();
-            Features features = new Features.Builder().syntax(syntaxOptions).build();
-            AnalyzeOptions parameters = new AnalyzeOptions.Builder()
-                    .text(query.getText())
-                    .features(features)
-                    .build();
-            results = service.analyze(parameters)
-                    .execute()
-                    .getResult();
+                SyntaxOptions syntaxOptions = new SyntaxOptions.Builder().tokens(syntaxOptionsTokens).sentences(true).build();
+                Features features = new Features.Builder().syntax(syntaxOptions).build();
+                AnalyzeOptions parameters = new AnalyzeOptions.Builder()
+                        .text(query.getText())
+                        .features(features)
+                        .build();
+                results = service.analyze(parameters)
+                        .execute()
+                        .getResult();
 
-        } else if (query.getOption().contains("Emotion")) {
-            List<String> targets = parseKeyword();
+            } else if (query.getOption().contains("Emotion")) {
+                List<String> targets = parseKeyword();
 
-            EmotionOptions emotionOptions = new EmotionOptions.Builder()
-                    .targets(targets)
-                    .build();
+                EmotionOptions emotionOptions = new EmotionOptions.Builder()
+                        .targets(targets)
+                        .build();
 
-            Features features = new Features.Builder()
-                    .emotion(emotionOptions)
-                    .build();
+                Features features = new Features.Builder()
+                        .emotion(emotionOptions)
+                        .build();
 
-            AnalyzeOptions analyzeOptions = new AnalyzeOptions.Builder()
-                    .text(query.getText())
-                    .features(features)
-                    .build();
+                AnalyzeOptions analyzeOptions = new AnalyzeOptions.Builder()
+                        .text(query.getText())
+                        .features(features)
+                        .build();
 
-            results = service.analyze(analyzeOptions)
-                    .execute()
-                    .getResult();
+                results = service.analyze(analyzeOptions)
+                        .execute()
+                        .getResult();
 
+                return results;
+            }
+
+        } catch (Exception e) {
+            logger.severe("Warning: Authentication does not work. It may be caused by expired or wrongly inputted Auth Token.");
         }
-
+        
         return results;
+
     }
 
     //TODO why not use the existing class from Watson instead of creating my own class to contain the result
     //TODO parseEmotion needs to have parse Keywords as keywords will be displayed in the result
     public List<Emotion> parseEmotion(AnalysisResults analysisResults) {
         List<Emotion> listOfEmotions = new ArrayList<>();
-        List<TargetedEmotionResults> targets = analysisResults.getEmotion().getTargets();
 
+        try {
+            List<TargetedEmotionResults> targets = analysisResults.getEmotion().getTargets();
 
-        for (TargetedEmotionResults targetedEmotionResults: targets) {
-            listOfEmotions.add(new Emotion(targetedEmotionResults.getText(), targetedEmotionResults.getEmotion().getSadness(),
-                    targetedEmotionResults.getEmotion().getJoy(), targetedEmotionResults.getEmotion().getFear(),
-                    targetedEmotionResults.getEmotion().getDisgust(), targetedEmotionResults.getEmotion().getAnger()));
+            for (TargetedEmotionResults targetedEmotionResults: targets) {
+                listOfEmotions.add(new Emotion(targetedEmotionResults.getText(), targetedEmotionResults.getEmotion().getSadness(),
+                        targetedEmotionResults.getEmotion().getJoy(), targetedEmotionResults.getEmotion().getFear(),
+                        targetedEmotionResults.getEmotion().getDisgust(), targetedEmotionResults.getEmotion().getAnger()));
+            }
+
+        } catch (Exception e) {
+            logger.warning("Emotion result cannot be parsed from the result.");
         }
+
         return listOfEmotions;
     }
 
     public List<SyntaxResult> parseSyntax(AnalysisResults analysisResults) {
         List<SyntaxResult> syntaxResultList = new ArrayList<>();
-        List<TokenResult> results = analysisResults.getSyntax().getTokens();
 
-        for (TokenResult tokenResult : results) {
-            syntaxResultList.add(new SyntaxResult(tokenResult.getText(), tokenResult.getPartOfSpeech()));
+        try {
+            List<TokenResult> results = analysisResults.getSyntax().getTokens();
+
+            for (TokenResult tokenResult : results) {
+                syntaxResultList.add(new SyntaxResult(tokenResult.getText(), tokenResult.getPartOfSpeech()));
+            }
+
+        } catch (Exception e) {
+            logger.warning("Syntax result cannot be parsed.");
         }
 
         return syntaxResultList;
