@@ -2,18 +2,26 @@ package com.packagename.myapp.spring;
 
 import java.io.*;
 import java.nio.file.Path;
+import java.util.logging.Logger;
 
 public class PasswordReader {
 
     private String apiKey;
     private String url;
     private String accessToken;
+    private Logger logger = Logger.getLogger(PasswordReader.class.getName());
 
     public boolean isExist(String config) {
-        File toRead = new File(String.valueOf(Path.of(config)));
-        if(toRead.exists()){
-            return true;
+
+        try {
+            File toRead = new File(String.valueOf(Path.of(config)));
+            if(toRead.exists()){
+                return true;
+            }
+        } catch (Exception e) {
+            logger.info("File doesn't exist or path is incorrect.");
         }
+
         return false;
     }
 
