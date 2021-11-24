@@ -9,13 +9,7 @@ import java.util.List;
 
 //TODO must be better way in getting all the result in this class using generics? find out about generics
 public class Waiter {
-    private List<Emotion> resultsEmotion;
-    private List<SyntaxResult> syntaxResultList;
     private WatsonService watsonService;
-
-    private Query query;
-
-    private String queryOption;
 
     @Autowired
     public Waiter(Query query) throws IOException {
@@ -34,5 +28,14 @@ public class Waiter {
         AnalysisResults analysisResults = this.watsonService.connectToWatson();
         List<SyntaxResult> syntaxResultList = this.watsonService.parseSyntax(analysisResults);
         return syntaxResultList;
+    }
+
+    public String getKeywordResponse(int index) {
+        String result = this.watsonService.parseKeyword().get(index);
+        return result;
+    }
+
+    public int getKeywordSize() {
+        return this.watsonService.parseKeyword().size();
     }
 }

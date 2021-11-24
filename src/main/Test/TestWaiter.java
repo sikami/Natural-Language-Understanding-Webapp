@@ -17,6 +17,7 @@ public class TestWaiter {
 
         waiter = new Waiter(query);
         List<Emotion> emotionList = waiter.spitEmotionResponse();
+        System.out.println(emotionList);
         assertFalse(emotionList.isEmpty());
     }
 

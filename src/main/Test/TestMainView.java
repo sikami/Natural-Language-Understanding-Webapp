@@ -1,5 +1,6 @@
 import com.packagename.myapp.spring.MainView;
 import com.packagename.myapp.spring.Query;
+import com.packagename.myapp.spring.Waiter;
 import com.packagename.myapp.spring.WatsonService;
 import com.vaadin.flow.component.textfield.TextArea;
 import org.junit.jupiter.api.Assertions;
@@ -18,9 +19,8 @@ public class TestMainView {
     private static MainView mockedMainView;
     private static TextArea mockedTextArea;
     private TextArea mockedKeywordField;
-    private List<String> parsedResult;
-    private WatsonService watsonService;
     private Query query;
+    private Waiter waiter;
     //not mocking Result area first because it hasnt connected with Watson
     //TODO: need to refactor this as Query has not been attached to MainView class yet.
 
@@ -40,17 +40,6 @@ public class TestMainView {
 
     }
 
-    @Test
-    public void testIfKeywordsCanBeRetrievedAndParsed() throws IOException {
-        query = new Query();
-        query.setKeywords("banana, apples, carrots");
-        watsonService = new WatsonService(query);
-
-        parsedResult = watsonService.parseKeyword();
-        Assertions.assertEquals(3, parsedResult.size());
-        Assertions.assertEquals("carrots", parsedResult.get(2));
-
-    }
 
 }
 

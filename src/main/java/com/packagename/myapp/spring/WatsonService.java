@@ -25,7 +25,7 @@ public class WatsonService {
     }
 
     /**
-     * This method populates keywords. Important for Query to be declared in WatsonController.
+     * This method populates keywords.
      * Method has to be executed everytime we want to send for keyword to IBM
      *
      */
@@ -37,9 +37,9 @@ public class WatsonService {
         for (String word: keyword) {
             keywords.add(word.trim().toLowerCase());
         }
-
         return keywords;
     }
+
 
     /**
      * No need to authenticate with IAMAuthenticator no more, use Authenticator class and instantiate BearerTokenAuthenticator(string access token)
@@ -73,6 +73,7 @@ public class WatsonService {
 
         } else if (query.getOption().contains("Emotion")) {
             List<String> targets = parseKeyword();
+
             EmotionOptions emotionOptions = new EmotionOptions.Builder()
                     .targets(targets)
                     .build();
@@ -120,4 +121,6 @@ public class WatsonService {
 
         return syntaxResultList;
     }
+
+
 }

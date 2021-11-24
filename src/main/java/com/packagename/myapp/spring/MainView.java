@@ -16,7 +16,9 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import javax.validation.constraints.NotNull;
+import java.io.IOException;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.stream.Collectors;
 
 @Route("")
 @Scope("prototype")
@@ -24,10 +26,12 @@ import java.util.concurrent.atomic.AtomicReference;
 @Component
 public class MainView extends VerticalLayout {
 
-    TextArea textArea;
-    TextArea resultArea;
-    RadioButtonGroup<String> analyze;
-    TextField keywordField;
+    private TextArea textArea;
+    private TextArea resultArea;
+    private RadioButtonGroup<String> analyze;
+    private TextField keywordField;
+    private Waiter waiter;
+
 
     @Autowired
     private Query query;
@@ -94,8 +98,13 @@ public class MainView extends VerticalLayout {
         });
 
         button.addClickListener(event -> {
-            query = new Query(textArea.getValue(), keywordField.getValue());
-           addResult();
+            this.query = new Query(textArea.getValue(), keywordField.getValue());
+            this.query.setOption(analyze.getValue());
+            try {
+                addResult();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         });
 
 
@@ -125,14 +134,22 @@ public class MainView extends VerticalLayout {
         }
     }
 
-    private void addResult() {
+    private void addResult() throws IOException {
+        StringBuilder stringBuilder = new StringBuilder();
         resultArea = new TextArea();
         resultArea.setReadOnly(true);
         resultArea.setSizeFull();
         add(resultArea);
-        resultArea.setValue(query.getText() + " keyword: " + query.getKeyword());
+        resultArea.setValue(query.getText() + " keyword: " + query.getKeyword() + ", option: " + query.getOption());
 
         //TODO find a way to display the result here without having to instantiate watson service
+        this.waiter = new Waiter(query);
+        if (query.getOption().contains("Syntax")) {
+            this.waiter.spitSyntaxResponse().forEach(stringBuilder::append);
+        } else {
+            this.waiter.spitEmotionResponse().forEach(stringBuilder::append);
+        }
+        resultArea.setValue(stringBuilder.toString());
 
     }
 
