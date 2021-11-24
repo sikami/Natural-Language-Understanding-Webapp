@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.IOException;
 import java.util.*;
-import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
 public class WatsonService {
