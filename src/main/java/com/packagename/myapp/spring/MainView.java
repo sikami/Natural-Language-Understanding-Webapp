@@ -18,6 +18,7 @@ import org.springframework.stereotype.Component;
 import javax.validation.constraints.NotNull;
 import java.io.IOException;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.stream.Collectors;
 
 @Route("")
 @Scope("prototype")
@@ -134,20 +135,21 @@ public class MainView extends VerticalLayout {
     }
 
     private void addResult() throws IOException {
+        StringBuilder stringBuilder = new StringBuilder();
         resultArea = new TextArea();
         resultArea.setReadOnly(true);
-       // resultArea.setSizeFull();
+        resultArea.setSizeFull();
         add(resultArea);
-      //  resultArea.setValue(query.getText() + " keyword: " + query.getKeyword() + ", option: " + query.getOption());
+        resultArea.setValue(query.getText() + " keyword: " + query.getKeyword() + ", option: " + query.getOption());
 
         //TODO find a way to display the result here without having to instantiate watson service
         this.waiter = new Waiter(query);
         if (query.getOption().contains("Syntax")) {
-            resultArea.setValue(this.waiter.spitSyntaxResponse().toString());
+            this.waiter.spitSyntaxResponse().forEach(stringBuilder::append);
         } else {
-            resultArea.setValue(this.waiter.spitEmotionResponse().toString());
-
+            this.waiter.spitEmotionResponse().forEach(stringBuilder::append);
         }
+        resultArea.setValue(stringBuilder.toString());
 
     }
 
