@@ -7,7 +7,7 @@
 
 To connect to watson:
 
-1. Query class need to be in main view and attached with the user input, along with controller and service
+1. [No longer needed] Query class need to be in main view and attached with the user input, along with controller and service
 2. [OK] Retrieve API key from IBM
 3. [OK] Find out what URL in setservice is, by comparing with previous project in github
 4. [OK] Create Syntax result class
@@ -19,6 +19,7 @@ To connect to watson:
 10. change Syntax and Emotion option to Enum
 11. need to catch an error when forgot to setOption in query. When there is not keyword in the query, assume that its selecting syntax
 12. need to catch error if selecting emotion, text has to be long at least 100 words
-13. need to catch error if unauthorization exists, that means need to change the access token
-14. need to wrap the result in to the result field in Main view, possibly there is a method to do that
+13. [OK] need to catch error if unauthorization exists, that means need to change the access token
+14. [OK] need to wrap the result in to the result field in Main view, possibly there is a method to do that
 15. need to see if spell checker is possible for the text input
+16. need some logging
