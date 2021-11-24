@@ -1,6 +1,7 @@
 package com.packagename.myapp.spring;
 
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.dependency.HtmlImport;
 import com.vaadin.flow.component.dependency.StyleSheet;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.html.H4;
@@ -23,6 +24,7 @@ import java.util.stream.Collectors;
 @Route("")
 @Scope("prototype")
 @StyleSheet("frontend://styles/styles.css")
+@HtmlImport("frontend://styles/vaadin-config.html")
 @Component
 public class MainView extends VerticalLayout {
 
@@ -137,7 +139,6 @@ public class MainView extends VerticalLayout {
     private void addResult() throws IOException {
         StringBuilder stringBuilder = new StringBuilder();
         resultArea = new TextArea();
-        resultArea.setReadOnly(true);
         resultArea.setSizeFull();
         add(resultArea);
         resultArea.setValue(query.getText() + " keyword: " + query.getKeyword() + ", option: " + query.getOption());
