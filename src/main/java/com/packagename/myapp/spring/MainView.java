@@ -10,16 +10,11 @@ import com.vaadin.flow.component.radiobutton.RadioButtonGroup;
 import com.vaadin.flow.component.textfield.TextArea;
 import com.vaadin.flow.component.textfield.TextField;
 import org.springframework.beans.factory.annotation.Autowired;
-
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.Route;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
-
-import javax.validation.constraints.NotNull;
 import java.io.IOException;
-import java.util.concurrent.atomic.AtomicReference;
-import java.util.stream.Collectors;
 
 @Route("")
 @Scope("prototype")
@@ -113,10 +108,8 @@ public class MainView extends VerticalLayout {
     }
 
     private void buttonListener(Button button, String option) {
-        //AtomicReference<Label> label = new AtomicReference<>(new Label());
         if (option.equals("Emotion")) {
             button.addClickListener(event -> {
-                //label.set(new Label("Emotion is selected"));
                 keywordField.setEnabled(false);
                 analyze.setEnabled(false);
                 textArea.setEnabled(false);
@@ -126,7 +119,6 @@ public class MainView extends VerticalLayout {
             });
         } else if (option.equals("Syntax")) {
             button.addClickListener(event -> {
-                //label.set(new Label("Emotion is selected"));
                 analyze.setEnabled(false);
                 textArea.setEnabled(false);
                 System.out.println("Syntax is selected");
@@ -143,8 +135,8 @@ public class MainView extends VerticalLayout {
         add(resultArea);
         resultArea.setValue(query.getText() + " keyword: " + query.getKeyword() + ", option: " + query.getOption());
 
-        //TODO find a way to display the result here without having to instantiate watson service
         this.waiter = new Waiter(query);
+
         if (query.getOption().contains("Syntax")) {
             this.waiter.spitSyntaxResponse().forEach(stringBuilder::append);
         } else {
