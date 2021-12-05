@@ -84,7 +84,6 @@ public class MainView extends VerticalLayout {
                 add(button);
                 buttonListener(button, "Emotion");
 
-
             } else {
                 remove(button);
                 remove(keywordLabel);
@@ -110,12 +109,25 @@ public class MainView extends VerticalLayout {
     private void buttonListener(Button button, String option) {
         if (option.equals("Emotion")) {
             button.addClickListener(event -> {
-                keywordField.setEnabled(false);
-                analyze.setEnabled(false);
-                textArea.setEnabled(false);
-                System.out.println("emotion is selected");
-                button.setEnabled(false);
-                query.setOption("Emotion");
+
+                //need to find away on how to make exception when no keywords, without showing text field in the bottom
+                if (keywordField.isEmpty()) {
+                    System.out.println("no keyword");
+                    keywordField.setPlaceholder("Please insert keyword/s");
+
+
+                } else {
+                    keywordField.setEnabled(false);
+                    analyze.setEnabled(false);
+                    textArea.setEnabled(false);
+                    System.out.println("emotion is selected");
+                    button.setEnabled(false);
+                    query.setOption("Emotion");
+                }
+
+
+
+
             });
         } else if (option.equals("Syntax")) {
             button.addClickListener(event -> {
