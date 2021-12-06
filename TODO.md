@@ -19,8 +19,9 @@ To connect to watson:
 10. change Syntax and Emotion option to Enum
 11. need to catch an error when forgot to setOption in query. When there is not keyword in the query, assume that its selecting syntax
 12. need to catch error if selecting emotion, text has to be long at least 100 words
-13. need to catch error if selecting emotion with no keywords, then need to find another way around
+13. [ok] need to catch error if selecting emotion with no keywords, then need to find another way around - user needs to always have keyword for emotions
 14. [OK] need to catch error if unauthorization exists, that means need to change the access token
 15. [OK] need to wrap the result in to the result field in Main view, possibly there is a method to do that
 16. need to see if spell checker is possible for the text input
 17. need some logging
+18. Add word count in textArea

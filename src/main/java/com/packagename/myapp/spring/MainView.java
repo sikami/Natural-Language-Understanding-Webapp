@@ -6,6 +6,7 @@ import com.vaadin.flow.component.dependency.StyleSheet;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.html.H4;
 import com.vaadin.flow.component.html.Label;
+import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.radiobutton.RadioButtonGroup;
 import com.vaadin.flow.component.textfield.TextArea;
 import com.vaadin.flow.component.textfield.TextField;
@@ -14,6 +15,7 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.Route;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
+
 import java.io.IOException;
 
 @Route("")
@@ -78,11 +80,22 @@ public class MainView extends VerticalLayout {
 
         analyze.addValueChangeListener(event -> {
             if (event.getValue().equals("Emotion")) {
-                remove(button);
-                add(keywordLabel);
-                add(keywordField);
-                add(button);
-                buttonListener(button, "Emotion");
+
+                //TODO: Working on this at the moment, trying to find a way to deselect radio button when notification appears.
+                //TODO: worth to get the None radio button selection as radio button cannot be unselected
+                if ( textArea.isEmpty() || textArea.getValue().length() < 100) {
+                    Notification.show("Text need to be at least 100 words", 5000, Notification.Position.MIDDLE);
+
+                    System.out.println(analyze.getValue());
+
+                } else {
+                    remove(button);
+                    add(keywordLabel);
+                    add(keywordField);
+                    add(button);
+                    buttonListener(button, "Emotion");
+                }
+
 
             } else {
                 remove(button);
