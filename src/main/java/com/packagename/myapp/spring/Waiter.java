@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
-//TODO must be better way in getting all the result in this class using generics? find out about generics
 public class Waiter {
     private WatsonService watsonService;
     private static Logger logger = Logger.getLogger(Waiter.class.getName());
