@@ -81,8 +81,6 @@ public class MainView extends VerticalLayout {
         analyze.addValueChangeListener(event -> {
             if (event.getValue().equals("Emotion")) {
 
-                //TODO: Working on this at the moment, trying to find a way to deselect radio button when notification appears.
-                //TODO: worth to get the None radio button selection as radio button cannot be unselected
                 if ( textArea.isEmpty() || textArea.getValue().length() < 100) {
                     Notification.show("Text need to be at least 100 words", 7000, Notification.Position.MIDDLE);
                     analyze.setValue("None");
@@ -95,7 +93,6 @@ public class MainView extends VerticalLayout {
                     add(button);
                     buttonListener(button, "Emotion");
                 }
-
 
             } else {
                 remove(button);
