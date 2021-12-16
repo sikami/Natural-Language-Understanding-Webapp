@@ -65,7 +65,7 @@ public class MainView extends VerticalLayout {
 
     private void addOption() {
         analyze = new RadioButtonGroup<>();
-        analyze.setItems("Emotion", "Syntax");
+        analyze.setItems("Emotion", "Syntax", "None");
 
         Label analyzeOption = new Label("Analyze for:");
         add(analyzeOption);
@@ -84,8 +84,8 @@ public class MainView extends VerticalLayout {
                 //TODO: Working on this at the moment, trying to find a way to deselect radio button when notification appears.
                 //TODO: worth to get the None radio button selection as radio button cannot be unselected
                 if ( textArea.isEmpty() || textArea.getValue().length() < 100) {
-                    Notification.show("Text need to be at least 100 words", 5000, Notification.Position.MIDDLE);
-
+                    Notification.show("Text need to be at least 100 words", 7000, Notification.Position.MIDDLE);
+                    analyze.setValue("None");
                     System.out.println(analyze.getValue());
 
                 } else {
