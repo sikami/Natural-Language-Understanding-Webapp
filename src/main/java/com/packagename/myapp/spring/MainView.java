@@ -6,6 +6,7 @@ import com.vaadin.flow.component.dependency.StyleSheet;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.html.H4;
 import com.vaadin.flow.component.html.Label;
+import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.radiobutton.RadioButtonGroup;
 import com.vaadin.flow.component.textfield.TextArea;
 import com.vaadin.flow.component.textfield.TextField;
@@ -14,6 +15,7 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.Route;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
+
 import java.io.IOException;
 
 @Route("")
@@ -63,7 +65,7 @@ public class MainView extends VerticalLayout {
 
     private void addOption() {
         analyze = new RadioButtonGroup<>();
-        analyze.setItems("Emotion", "Syntax");
+        analyze.setItems("Emotion", "Syntax", "None");
 
         Label analyzeOption = new Label("Analyze for:");
         add(analyzeOption);
@@ -78,11 +80,19 @@ public class MainView extends VerticalLayout {
 
         analyze.addValueChangeListener(event -> {
             if (event.getValue().equals("Emotion")) {
-                remove(button);
-                add(keywordLabel);
-                add(keywordField);
-                add(button);
-                buttonListener(button, "Emotion");
+
+                if ( textArea.isEmpty() || textArea.getValue().length() < 100) {
+                    Notification.show("Text need to be at least 100 words", 7000, Notification.Position.MIDDLE);
+                    analyze.setValue("None");
+                    System.out.println(analyze.getValue());
+
+                } else {
+                    remove(button);
+                    add(keywordLabel);
+                    add(keywordField);
+                    add(button);
+                    buttonListener(button, "Emotion");
+                }
 
             } else {
                 remove(button);
