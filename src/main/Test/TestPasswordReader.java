@@ -28,9 +28,11 @@ public class TestPasswordReader {
         assertEquals(44, passwordReader.getApiKey().length());
     }
 
+    //Test will fail if using different API Key, as different API key has different token. So best to curl the token
+    //and calculate the length of the token then add it in method below
     @Test
     public void testIfAccessTokenIsPresent() throws IOException {
         passwordReader.read(path);
-        assertEquals(1748, passwordReader.getAccessToken().length());
+        assertEquals(1459, passwordReader.getAccessToken().length());
     }
 }

@@ -4,7 +4,7 @@
 .project
 .classpath
 /src/main/webapp/frontend-es*/
-config
+src/main/resources/config
 ibm-credentials.env
 *.iml
 .DS_Store
