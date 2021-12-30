@@ -99,7 +99,7 @@
         <dependency>
             <groupId>com.vaadin.external.google</groupId>
             <artifactId>android-json</artifactId>
-            <version>20201115</version>
+            <version>0.0.20131108.vaadin1</version>
             <scope>test</scope>
         </dependency>
 
@@ -109,8 +109,22 @@
     <build>
         <plugins>
             <plugin>
+
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                        <configuration>
+                            <classifier>spring-boot</classifier>
+                            <mainClass>
+                                com.baeldung.executable.ExecutableMavenJar
+                            </mainClass>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -120,6 +134,8 @@
                     <target>11</target>
                 </configuration>
             </plugin>
+
+
         </plugins>
     </build>
 
