@@ -123,15 +123,14 @@ public class MainView extends VerticalLayout {
                 //need to find away on how to make exception when no keywords, without showing text field in the bottom
                 if (keywordField.isEmpty()) {
                     resultArea.setVisible(false);
-                    System.out.println("no keyword");
                     keywordField.setPlaceholder("Please insert keyword/s");
+                    button.setEnabled(true);
 
                 } else {
                     resultArea.setVisible(true);
                     keywordField.setEnabled(false);
                     analyze.setEnabled(false);
                     textArea.setEnabled(false);
-                    System.out.println("emotion is selected");
                     button.setEnabled(false);
                     query.setOption("Emotion");
                 }
@@ -141,7 +140,6 @@ public class MainView extends VerticalLayout {
             button.addClickListener(event -> {
                 analyze.setEnabled(false);
                 textArea.setEnabled(false);
-                System.out.println("Syntax is selected");
                 button.setEnabled(false);
                 query.setOption("Syntax");
             });
@@ -160,7 +158,7 @@ public class MainView extends VerticalLayout {
         if (query.getOption().contains("Syntax")) {
             this.waiter.spitSyntaxResponse().forEach(stringBuilder::append);
         } else {
-            System.out.println("inside addResult");
+
             this.waiter.spitEmotionResponse().forEach(stringBuilder::append);
         }
         resultArea.setValue(stringBuilder.toString());
